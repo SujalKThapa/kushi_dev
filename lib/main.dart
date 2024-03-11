@@ -4,6 +4,7 @@ import 'package:kushi_3/themes/dark_mode.dart';
 import 'package:kushi_3/themes/light_mode.dart';
 
 import 'pages/introslider.dart';
+import 'pages/selectGender.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
         theme: lightMode,
         darkTheme: darkMode,
 
-      home: const IntroSlider(),
+      home: const SelectGender(),
     );
   }
 }
