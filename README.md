@@ -1,6 +1,6 @@
 # kushi_3
 
-A new Flutter project.
+A flutter fitness app that rewards users for excercising.
 
 ## Getting Started
 
