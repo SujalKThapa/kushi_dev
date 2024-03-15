@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kushi_3/components/optionButton.dart';
 import 'package:kushi_3/components/mybutton.dart';
-import '';
-
 
 class SelectGender extends StatefulWidget {
   const SelectGender({super.key});
