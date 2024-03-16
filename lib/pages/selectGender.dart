@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kushi_3/components/optionButton.dart';
 import 'package:kushi_3/components/mybutton.dart';
+import 'package:kushi_3/pages/selectHeight.dart';
 
 class SelectGender extends StatefulWidget {
   const SelectGender({super.key});
@@ -61,7 +62,13 @@ class selectGenderState extends State<SelectGender> {
                   onTap: () => selectOption(2)
               ),
               const SizedBox(height: 120,),
-              MyButton(text: "Continue", onTap: () {},),
+              MyButton(text: "Continue", onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SelectHeight()));
+              },
+             ),
             ],
           ),
         )

@@ -1,10 +1,8 @@
-
-
-
 import 'package:flutter/material.dart';
 import 'package:kushi_3/components/mybutton.dart';
 import 'package:kushi_3/components/sign_in_with.dart';
 import 'package:kushi_3/components/textfield.dart';
+import 'package:kushi_3/pages/selectGender.dart';
 import 'package:kushi_3/pages/signup.dart';
 
 class SignIn extends StatelessWidget {
@@ -52,7 +50,13 @@ class SignIn extends StatelessWidget {
               controller: _passwordController,
             ),
             const SizedBox(height: 50,),
-            MyButton(text: "Sign In", onTap: () {},),
+            MyButton(text: "Sign in", onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => SelectGender()));
+            },
+            ),
             const SizedBox(height: 15,),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

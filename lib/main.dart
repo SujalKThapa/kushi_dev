@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:kushi_3/pages/selectHeight.dart';
+import 'package:kushi_3/pages/selectWeight.dart';
 import 'package:kushi_3/themes/dark_mode.dart';
 import 'package:kushi_3/themes/light_mode.dart';
 
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
         theme: lightMode,
         darkTheme: darkMode,
 
-      home: const SelectHeight(),
+      home: const IntroSlider(),
     );
   }
 }
