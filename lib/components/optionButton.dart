@@ -26,7 +26,7 @@ class OptionButton extends StatelessWidget {
             backgroundColor: isSelected ? Theme.of(context).colorScheme.secondary : null,
             side: BorderSide(
               color: isSelected ? Theme.of(context).colorScheme.inversePrimary : Colors.grey,
-              width: isSelected ? 2.5 : 1
+              width: isSelected ? 3 : 1
             ),
             foregroundColor: isSelected ? Theme.of(context).colorScheme.inversePrimary : null,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10), ),

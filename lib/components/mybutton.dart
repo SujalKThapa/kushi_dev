@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MyButton extends StatelessWidget {
@@ -23,7 +24,7 @@ class MyButton extends StatelessWidget {
             backgroundColor: Theme.of(context).colorScheme.inversePrimary,
             foregroundColor: Theme.of(context).colorScheme.secondary,
             elevation: 10,
-            shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.5)),
           ),
           child: Text(text,
             style: const TextStyle(

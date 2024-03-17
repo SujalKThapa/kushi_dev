@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,14 +17,16 @@ class SelectHeight extends StatefulWidget{
 }
 
 var labelStart = 1;
+var btnStyle1 =  const TextStyle(
+  color: Colors.black,
+);
+var btnStyle2 = const TextStyle(
+  color: Colors.black,
+  fontWeight: FontWeight.bold,
+);
 
 class selectHeightState extends State<SelectHeight> {
-  var btnStyle1 =  const TextStyle(
-      color: Colors.black
-  );
-  var btnStyle2 = const TextStyle(
-      color: Colors.black,
-  );
+
   var labels = ['ft', 'cm'];
   var heightUnit = "cm";
   @override
@@ -53,8 +57,8 @@ class selectHeightState extends State<SelectHeight> {
               radiusStyle: true,
               activeBgColor: [Colors.white],
               customTextStyles:  [
-                btnStyle1,
-                btnStyle2
+                btnStyle2,
+                btnStyle1
               ],
               borderColor: const [Colors.grey],
               inactiveBgColor: Colors.white54,
@@ -62,8 +66,11 @@ class selectHeightState extends State<SelectHeight> {
               totalSwitches: 2,
               labels: ["Feet", "Centimetre"],
               onToggle: (index) {
-                if(index != null) {
+                if(index != null){
                   setState(() {
+                    var temp = btnStyle1;
+                    btnStyle1 = btnStyle2;
+                    btnStyle2 = temp;
                     labelStart = index;
                     heightUnit = labels[index];
                     print(heightUnit);

@@ -42,21 +42,21 @@ class selectGenderState extends State<SelectGender> {
               ),),
               const SizedBox(height: 30,),
               OptionButton(
-                emojiText: "👩🏻",
+                emojiText: "👩",
                 text: "Female",
                 isSelected: selectedOptionIndex == 0,
                 onTap: () => selectOption(0)
               ),
               const SizedBox(height: 30,),
               OptionButton(
-                  emojiText: "👨🏻",
+                  emojiText: "👨",
                   text: "Male",
                   isSelected: selectedOptionIndex == 1,
                   onTap: () => selectOption(1)
               ),
               const SizedBox(height: 30,),
               OptionButton(
-                  emojiText: "🌈",
+                  emojiText: "🧓",
                   text: "Other",
                   isSelected: selectedOptionIndex == 2,
                   onTap: () => selectOption(2)
