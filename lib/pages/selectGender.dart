@@ -1,7 +1,8 @@
+// ignore: file_names
 import 'package:flutter/material.dart';
-import 'package:kushi_3/components/optionButton.dart';
 import 'package:kushi_3/components/mybutton.dart';
-
+import 'package:kushi_3/components/optionButton.dart';
+import 'package:kushi_3/pages/selectHeight.dart';
 
 
 class SelectGender extends StatefulWidget {
@@ -44,27 +45,33 @@ class selectGenderState extends State<SelectGender> {
               ),),
               const SizedBox(height: 30,),
               OptionButton(
-                emojiText: "👩🏻",
+                emojiText: "👩",
                 text: "Female",
                 isSelected: selectedOptionIndex == 0,
                 onTap: () => selectOption(0)
               ),
               const SizedBox(height: 30,),
               OptionButton(
-                  emojiText: "👨🏻",
+                  emojiText: "👨",
                   text: "Male",
                   isSelected: selectedOptionIndex == 1,
                   onTap: () => selectOption(1)
               ),
               const SizedBox(height: 30,),
               OptionButton(
-                  emojiText: "🌈",
+                  emojiText: "🧓",
                   text: "Other",
                   isSelected: selectedOptionIndex == 2,
                   onTap: () => selectOption(2)
               ),
               const SizedBox(height: 120,),
-              MyButton(text: "Continue", onTap: () {},),
+              MyButton(text: "Continue", onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const SelectHeight()));
+              },
+             ),
             ],
           ),
         )

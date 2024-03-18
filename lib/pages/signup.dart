@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:kushi_3/components/mybutton.dart';
 import 'package:kushi_3/components/sign_in_with.dart';
 import 'package:kushi_3/components/textfield.dart';
+import 'package:kushi_3/pages/selectGender.dart';
 
 class SignUp extends StatelessWidget {
   final TextEditingController _usernameController = TextEditingController();
@@ -71,8 +72,13 @@ class SignUp extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10,),
-            
-            MyButton(text: "Sign Up", onTap: () {},),
+            MyButton(text: "Sign Up", onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => SelectGender()));
+            },
+            ),
             const SizedBox(height: 15,),
 
             const SizedBox(height:50,),
