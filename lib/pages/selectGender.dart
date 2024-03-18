@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kushi_3/components/optionButton.dart';
 import 'package:kushi_3/components/mybutton.dart';
-import '';
+
 
 
 class SelectGender extends StatefulWidget {
@@ -12,6 +12,7 @@ class SelectGender extends StatefulWidget {
 }
 
 
+// ignore: camel_case_types
 class selectGenderState extends State<SelectGender> {
 
   int selectedOptionIndex = -1; //-1 shows that no option is initially selected

@@ -5,12 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:kushi_3/components/mybutton.dart';
 import 'package:kushi_3/components/sign_in_with.dart';
 import 'package:kushi_3/components/textfield.dart';
+import 'package:kushi_3/pages/selectGender.dart';
 import 'package:kushi_3/pages/signup.dart';
 
 class SignIn extends StatelessWidget {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  
   SignIn({super.key});
 
   @override
@@ -52,7 +54,14 @@ class SignIn extends StatelessWidget {
               controller: _passwordController,
             ),
             const SizedBox(height: 50,),
-            MyButton(text: "Sign In", onTap: () {},),
+            MyButton(text: "Sign In", onTap:(){
+              Navigator.push(
+                        context,
+                        MaterialPageRoute(builder:(context){
+                          return const SelectGender();
+                        })
+                    );
+            },),
             const SizedBox(height: 15,),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
