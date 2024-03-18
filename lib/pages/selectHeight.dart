@@ -1,10 +1,5 @@
-import 'dart:ui';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
-import 'package:kushi_3/pages/selectGender.dart';
 import 'package:kushi_3/pages/selectWeight.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:kushi_3/components/mybutton.dart';
@@ -26,7 +21,6 @@ var btnStyle2 = const TextStyle(
 );
 
 class selectHeightState extends State<SelectHeight> {
-
   var labels = ['ft', 'cm'];
   var heightUnit = "cm";
   @override

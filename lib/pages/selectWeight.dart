@@ -1,7 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:kushi_3/components/mybutton.dart';
 
