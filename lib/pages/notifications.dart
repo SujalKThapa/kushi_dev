@@ -1,23 +1,92 @@
 import 'package:flutter/material.dart';
+import 'package:toggle_switch/toggle_switch.dart';
 
-class User_Notification extends StatefulWidget {
-  const User_Notification({super.key});
-
+class NotificationPage extends StatefulWidget {
   @override
-  State<User_Notification> createState() => _User_NotificationState();
+  _NotificationPageState createState() => _NotificationPageState();
 }
+int _labelStart = 1;
+class _NotificationPageState extends State<NotificationPage> {
+ 
 
-class _User_NotificationState extends State<User_Notification> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.background,
-        title: Text(
-          "Notifications",
-
+        automaticallyImplyLeading: false,
+        title: Center(child: Text('Notifications')),
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(50.0),
+          child: Container(
+            margin: EdgeInsets.only(bottom: 10.0),
+            child: ToggleSwitch(
+              minWidth: 150.0,
+              initialLabelIndex: _labelStart, // Set initial index
+              cornerRadius: 30.0,
+              radiusStyle: true,
+              activeBgColor: [Colors.white],
+              customTextStyles: [
+                TextStyle(color: Colors.black), // Style for "Events" label
+                TextStyle(color: Colors.black), // Style for "New" label
+                TextStyle(color: Colors.black), // Style for "All" label
+              ],
+              borderColor: const [Colors.grey],
+              inactiveBgColor: Colors.white54,
+              inactiveFgColor: Colors.grey,
+              totalSwitches: 3,
+              labels: ["Events", "New", "All"],
+              onToggle: (index) {
+                if(index != null) {
+                      setState(() {
+                        _labelStart = index;
+                        
+                      });
+                    }
+              },
+            ),
+          ),
         ),
+      ),
+      body: _selectedFragment(), // Call a function to display the selected fragment
+    );
+  }
+
+  Widget _selectedFragment() {
+    switch (_labelStart) {
+      case 0:
+        return EventsFragment();
+      case 1:
+        return NewFragment();
+      case 2:
+        return AllFragment();
+      default:
+        return Container();
+    }
+  }
+}
+
+class EventsFragment extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        'Events Fragment',
+        style: TextStyle(fontSize: 24),
       ),
     );
   }
 }
+
+class NewFragment extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        'New Fragment',
+        style: TextStyle(fontSize: 24),
+      ),
+    );
+  }
+}
+
+
