@@ -3,15 +3,20 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:kushi_3/pages/notifications.dart';
 
 class MainActivity extends StatefulWidget {
-  String name;
-  MainActivity({required this.name, super.key});
+  String namey;
+  MainActivity({required this.namey, super.key});
 
   @override
   State<MainActivity> createState() => _MainActivityState();
 }
 
 class _MainActivityState extends State<MainActivity> {
-  String name = "suhaas";
+  late String name;
+  @override
+   void initState() {
+    super.initState();
+    name = widget.namey; // Accessing namey from the widget instance
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,7 +61,7 @@ class _MainActivityState extends State<MainActivity> {
                        Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => User_Notification()));
+                      builder: (context) => NotificationPage()));
                     },
                   )
                 ],

@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
         theme: lightMode,
         darkTheme: darkMode,
 
-      home: MainActivity(name: "suhas",),
+      home: MainActivity(namey: "suhas",),
     );
   }
 }
