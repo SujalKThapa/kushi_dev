@@ -94,6 +94,10 @@ class _MainActivityState extends State<MainActivity> {
               icon: Icons.home,
               // text: "home"/
             ),
+            const GButton(
+              icon: Icons.home,
+              // text: "home"/
+            ),
           ],
         ));
   }

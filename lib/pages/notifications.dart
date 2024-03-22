@@ -89,4 +89,16 @@ class NewFragment extends StatelessWidget {
   }
 }
 
+class AllFragment extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        'All Fragments',
+        style: TextStyle(fontSize: 24),
+      ),
+    );
+  }
+}
+
 
