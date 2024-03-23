@@ -17,18 +17,45 @@ class settingButton extends StatelessWidget {
       width: double.infinity,
       height: 60,
       padding: const EdgeInsets.symmetric(horizontal: 25),
-      child: ElevatedButton(
+      child: OutlinedButton(
           onPressed: onTap,
           style: ElevatedButton.styleFrom(
-            backgroundColor: Theme.of(context).colorScheme.background,
+            backgroundColor: Colors.white,
             elevation: 10,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.5)),
-          ),
-          child: Text(text,
-            style: const TextStyle(
-              fontWeight: FontWeight.w500,
-              fontSize: 20,
+            side: BorderSide(
+              color: Colors.black12,
+              width: 1.5
             ),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5.0),
+               ),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(
+                text,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 20,
+                ),
+              ),
+              Spacer(),
+              TextButton(
+                onPressed: () {},
+                child: Text(
+                  ">",
+                  style: TextStyle(fontSize: 32),
+                ),
+                style: TextButton.styleFrom(
+
+                  padding: EdgeInsets.only(bottom: 5),
+
+                  minimumSize: Size(48, 48),
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                ),
+              ),
+            ],
           )
       ),
     );

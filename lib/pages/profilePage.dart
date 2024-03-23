@@ -29,7 +29,10 @@ class _profilePageState extends State<profilePage> {
           mainAxisAlignment: MainAxisAlignment.start,
           children:[
             SizedBox(height: 60, ),
-            Text("Profile", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),),
+            Padding(
+              padding: const EdgeInsets.only(right: 240.0),
+              child: Text("Profile", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),),
+            ),
             SizedBox(height: 25, ),
             Padding(
               padding: const EdgeInsets.only(left: 10.0),
@@ -103,19 +106,103 @@ class _profilePageState extends State<profilePage> {
                   child: Text(globals.userName, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 50),),
                 )
             ),
-            const SizedBox(height: 30,),
+            const SizedBox(height: 10,),
             settingButton(
                 text: "Edit profile",
                 onTap: () => () {}
             ),
-            const SizedBox(height: 30,),
+            const SizedBox(height: 10,),
             settingButton(
                 text: "Privacy profile",
                 onTap: () => () {}
             ),
-            const SizedBox(height: 30,),
+            const SizedBox(height: 10,),
             settingButton(
                 text: "Settings",
+                onTap: () => () {}
+            ),
+            const SizedBox(height: 20,),
+            Container(
+              width: double.infinity,
+              height: 120,
+              padding: const EdgeInsets.symmetric(horizontal: 25),
+              child: OutlinedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.black87,
+                    foregroundColor: Colors.white,
+                    elevation: 10,
+                    side: BorderSide(
+                        color: Colors.black12,
+                        width: 1.5
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top:16.0, right: 140),
+                            child: Container(
+                              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                              decoration: BoxDecoration(
+                                color: Colors.red,
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              child: Text(
+                                "Pro",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16, // Adjust as needed
+                                ),
+                              ),
+                            ),
+                          ),
+
+
+                          Text(
+                            "Upgrade to premium",
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 20,
+                            ),
+                          ),
+                          Text(
+                            "This subscription is auto-renewable",
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w300,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Spacer(),
+                      TextButton(
+                        onPressed: () {},
+                        child: Text(
+                          ">",
+                          style: TextStyle(fontSize: 32, color: Colors.white),
+                        ),
+                        style: TextButton.styleFrom(
+
+                          padding: EdgeInsets.only(bottom: 5),
+
+                          minimumSize: Size(48, 48),
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        ),
+                      ),
+                    ],
+                  )
+              ),
+            ),
+            const SizedBox(height: 10,),
+            settingButton(
+                text: "Sign out",
                 onTap: () => () {}
             ),
 
