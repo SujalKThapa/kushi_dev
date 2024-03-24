@@ -209,6 +209,7 @@ class _profilePageState extends State<profilePage> {
           ]
         ),
         bottomNavigationBar: GNav(
+          selectedIndex: 4,
           backgroundColor: Theme.of(context).colorScheme.background,
           color: Theme.of(context).colorScheme.primary,
           activeColor: Theme.of(context).colorScheme.background,
