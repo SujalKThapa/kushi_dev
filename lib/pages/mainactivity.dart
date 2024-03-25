@@ -6,7 +6,7 @@ class MainActivity extends StatefulWidget {
   String namey;
   MainActivity({required this.namey, super.key});
 
-  @override
+  @override          
   State<MainActivity> createState() => _MainActivityState();
 }
 

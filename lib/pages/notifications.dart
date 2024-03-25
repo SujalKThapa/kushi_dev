@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:kushi_3/pages/Fragments/NotifiactionFragment/allfragment.dart';
+import 'package:kushi_3/pages/Fragments/NotifiactionFragment/eventsfragment.dart';
+import 'package:kushi_3/pages/Fragments/NotifiactionFragment/newfragment.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
 class NotificationPage extends StatefulWidget {
@@ -14,6 +17,7 @@ class _NotificationPageState extends State<NotificationPage> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
+        backgroundColor: Theme.of(context).colorScheme.background,
         title: Center(child: Text('Notifications')),
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(50.0),
@@ -65,28 +69,6 @@ class _NotificationPageState extends State<NotificationPage> {
   }
 }
 
-class EventsFragment extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        'Events Fragment',
-        style: TextStyle(fontSize: 24),
-      ),
-    );
-  }
-}
 
-class NewFragment extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        'New Fragment',
-        style: TextStyle(fontSize: 24),
-      ),
-    );
-  }
-}
 
 

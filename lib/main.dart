@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
-import 'package:kushi_3/pages/mainactivity.dart';
+import 'package:kushi_3/pages/introslider.dart';
+import 'package:kushi_3/pages/otp.dart';
 import 'package:kushi_3/themes/dark_mode.dart';
 import 'package:kushi_3/themes/light_mode.dart';
 
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
         theme: lightMode,
         darkTheme: darkMode,
 
-      home: MainActivity(namey: "suhas",),
+      home:IntroSlider(),
     );
   }
 }

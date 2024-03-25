@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:toggle_switch/toggle_switch.dart';
 import 'package:kushi_3/components/mybutton.dart';
+import 'package:kushi_3/pages/mainactivity.dart';
+import 'package:toggle_switch/toggle_switch.dart';
 
 
 class SelectWeight extends StatefulWidget{
@@ -84,7 +85,12 @@ class selectWeightState extends State<SelectWeight> {
                 ],
               ),
               const SizedBox(height: 100,),
-              MyButton(text: "Continue", onTap: () {},),
+              MyButton(text: "Continue", onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => MainActivity(namey: "suhas",)));
+              },),
             ],
           ),
         )

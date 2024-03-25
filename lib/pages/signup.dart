@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:kushi_3/components/mybutton.dart';
 import 'package:kushi_3/components/sign_in_with.dart';
 import 'package:kushi_3/components/textfield.dart';
+import 'package:kushi_3/pages/otp.dart';
 import 'package:kushi_3/pages/selectGender.dart';
 
 class SignUp extends StatelessWidget {
@@ -76,7 +77,7 @@ class SignUp extends StatelessWidget {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => SelectGender()));
+                      builder: (context) => OTPVerificationPage()));
             },
             ),
             const SizedBox(height: 15,),
