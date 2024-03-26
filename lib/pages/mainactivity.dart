@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:kushi_3/pages/notifications.dart';
+import 'package:kushi_3/pages/profilePage.dart';
+import 'package:kushi_3/model/globals.dart' as globals;
 
 class MainActivity extends StatefulWidget {
   String namey;
@@ -93,6 +95,15 @@ class _MainActivityState extends State<MainActivity> {
             const GButton(
               icon: Icons.home,
               // text: "home"/
+            ),
+            GButton(
+              icon: Icons.home,
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => profilePage(namey: globals.userName)));
+              }// text: "home"/
             ),
           ],
         ));
