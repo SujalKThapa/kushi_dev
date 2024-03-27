@@ -1,14 +1,17 @@
-
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 import 'package:flutter/material.dart';
-import 'package:kushi_3/pages/introslider.dart';
-import 'package:kushi_3/pages/mainactivity.dart';
-import 'package:kushi_3/pages/otp.dart';
+import 'package:kushi_3/pages/signin.dart';
 import 'package:kushi_3/themes/dark_mode.dart';
 import 'package:kushi_3/themes/light_mode.dart';
 import 'package:kushi_3/model/globals.dart' as globals;
 
-void main() {
-  runApp(const MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized(); // Ensures all plugins are initialized
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  ); // Asynchronously initialize Firebase
+  runApp(MyApp()); // Run your application
 }
 
 class MyApp extends StatelessWidget {
@@ -25,10 +28,7 @@ class MyApp extends StatelessWidget {
         theme: lightMode,
         darkTheme: darkMode,
 
-
-      home:IntroSlider()
-      // home: MainActivity(namey: globals.userName,),
-
+      home: SignIn(),
     );
   }
 }

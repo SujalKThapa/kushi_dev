@@ -10,7 +10,6 @@ class NotificationPage extends StatefulWidget {
 }
 int _labelStart = 1;
 class _NotificationPageState extends State<NotificationPage> {
- 
 
   @override
   Widget build(BuildContext context) {
@@ -41,11 +40,11 @@ class _NotificationPageState extends State<NotificationPage> {
               labels: ["Events", "New", "All"],
               onToggle: (index) {
                 if(index != null) {
-                      setState(() {
-                        _labelStart = index;
-                        
-                      });
-                    }
+                  setState(() {
+                    _labelStart = index;
+
+                  });
+                }
               },
             ),
           ),
@@ -54,7 +53,6 @@ class _NotificationPageState extends State<NotificationPage> {
       body: _selectedFragment(), // Call a function to display the selected fragment
     );
   }
-
   Widget _selectedFragment() {
     switch (_labelStart) {
       case 0:
@@ -68,19 +66,3 @@ class _NotificationPageState extends State<NotificationPage> {
     }
   }
 }
-
-
-
-class AllFragment extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        'All Fragments',
-        style: TextStyle(fontSize: 24),
-      ),
-    );
-  }
-}
-
-

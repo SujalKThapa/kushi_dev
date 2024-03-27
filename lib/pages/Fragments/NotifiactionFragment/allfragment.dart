@@ -4,7 +4,7 @@ import "package:kushi_3/model/notificationdata.dart";
 
 class AllFragment extends StatelessWidget {
   @override
- Widget build(BuildContext context) {
+  Widget build(BuildContext context) {
     return ListView.builder(
       itemCount: 2, // Example: You can replace this with the actual number of notifications
       itemBuilder: (context, index) {

@@ -9,9 +9,7 @@ class SelectWeight extends StatefulWidget{
   @override
   State<StatefulWidget> createState() => selectWeightState();
 }
-
 var labelStart = 1;
-
 class selectWeightState extends State<SelectWeight> {
   var btnStyle1 =  const TextStyle(
       color: Colors.black
@@ -87,9 +85,9 @@ class selectWeightState extends State<SelectWeight> {
               const SizedBox(height: 100,),
               MyButton(text: "Continue", onTap: () {
                 Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => MainActivity(namey: "suhas",)));
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => MainActivity(namey: "suhas",)));
               },),
             ],
           ),

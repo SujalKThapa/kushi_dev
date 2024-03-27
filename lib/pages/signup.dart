@@ -1,6 +1,3 @@
-
-
-
 import 'package:flutter/material.dart';
 import 'package:kushi_3/components/mybutton.dart';
 import 'package:kushi_3/components/sign_in_with.dart';
@@ -11,9 +8,7 @@ import 'package:kushi_3/pages/selectGender.dart';
 class SignUp extends StatelessWidget {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
   SignUp({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,21 +21,16 @@ class SignUp extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-
             const SizedBox(height: 25,),
-
             const Text(
               "Sign Up",
               style: TextStyle(
                 fontWeight: FontWeight.w700,
-
                 color: Colors.black,
                 fontSize: 29,
               ),
             ),
-
             const SizedBox(height: 25,),
-
             MyTextField(
               hintText: "Full Name",
               obscureText: false,
@@ -81,28 +71,19 @@ class SignUp extends StatelessWidget {
             },
             ),
             const SizedBox(height: 15,),
-
             const SizedBox(height:50,),
-
             const Text("Sign In With", style: TextStyle(
               fontWeight: FontWeight.w700,
               fontSize: 25,
             ),),
             const Row(
-
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SquareTile(imagePath: 'assets/icons/google.png',),
                 SizedBox(width: 10,),
                 SquareTile(imagePath: 'assets/icons/apple.png',)
-
-
               ],
             ),
-
-
-
-
           ],
         ),
       ),
