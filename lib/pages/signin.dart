@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:kushi_3/components/mybutton.dart';
 import 'package:kushi_3/components/sign_in_with.dart';
@@ -51,11 +52,25 @@ class SignIn extends StatelessWidget {
               controller: _passwordController,
             ),
             const SizedBox(height: 50,),
-            MyButton(text: "Sign in", onTap: () {
-              Navigator.push(
+            MyButton(text: "Sign in", onTap: () async {
+              try{
+                UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+                    email: _usernameController.text.trim(),
+                    password: _passwordController.text.trim()
+                );
+                Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => SelectGender()));
+                  MaterialPageRoute(builder: (context) => SelectGender()),
+                );
+              }
+              catch (e){
+                print("Failed to sign in: $e");
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("Failed to sign in. Please check your credentials."),
+                  ),
+                );
+              }
             },
             ),
             const SizedBox(height: 15,),
