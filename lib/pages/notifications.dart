@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:kushi_3/pages/Fragments/NotifiactionFragment/allfragment.dart';
+import 'package:kushi_3/pages/Fragments/NotifiactionFragment/eventsfragment.dart';
+import 'package:kushi_3/pages/Fragments/NotifiactionFragment/newfragment.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
 class NotificationPage extends StatefulWidget {
@@ -7,13 +10,13 @@ class NotificationPage extends StatefulWidget {
 }
 int _labelStart = 1;
 class _NotificationPageState extends State<NotificationPage> {
- 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
+        backgroundColor: Theme.of(context).colorScheme.background,
         title: Center(child: Text('Notifications')),
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(50.0),
@@ -37,11 +40,11 @@ class _NotificationPageState extends State<NotificationPage> {
               labels: ["Events", "New", "All"],
               onToggle: (index) {
                 if(index != null) {
-                      setState(() {
-                        _labelStart = index;
-                        
-                      });
-                    }
+                  setState(() {
+                    _labelStart = index;
+
+                  });
+                }
               },
             ),
           ),
@@ -50,7 +53,6 @@ class _NotificationPageState extends State<NotificationPage> {
       body: _selectedFragment(), // Call a function to display the selected fragment
     );
   }
-
   Widget _selectedFragment() {
     switch (_labelStart) {
       case 0:
@@ -64,41 +66,3 @@ class _NotificationPageState extends State<NotificationPage> {
     }
   }
 }
-
-class EventsFragment extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        'Events Fragment',
-        style: TextStyle(fontSize: 24),
-      ),
-    );
-  }
-}
-
-class NewFragment extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        'New Fragment',
-        style: TextStyle(fontSize: 24),
-      ),
-    );
-  }
-}
-
-class AllFragment extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        'All Fragments',
-        style: TextStyle(fontSize: 24),
-      ),
-    );
-  }
-}
-
-
