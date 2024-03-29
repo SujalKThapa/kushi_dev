@@ -1,0 +1,31 @@
+import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:kushi_3/pages/mainactivity.dart';
+import 'package:kushi_3/model/globals.dart' as globals;
+import 'package:kushi_3/pages/signin.dart';
+import 'package:kushi_3/pages/signup.dart';
+
+import '../pages/introslider.dart';
+
+
+
+class AuthGate extends StatelessWidget {
+  const AuthGate({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body:StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context,snapshot){
+          if(snapshot.hasData){
+            return MainActivity(namey: globals.userName);
+          }
+          else{
+            return IntroSlider();
+          }
+        },
+      )
+    );
+  }
+}

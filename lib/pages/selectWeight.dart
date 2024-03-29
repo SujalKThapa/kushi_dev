@@ -34,7 +34,7 @@ class selectWeightState extends State<SelectWeight> {
               const SizedBox(height: 60,),
               const Text("Step 4 of 8"),
               const SizedBox(height: 90,),
-              const Text("Enter weight", style: TextStyle(
+              const Text("Enter weidjfxc", style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
                 fontSize: 29,

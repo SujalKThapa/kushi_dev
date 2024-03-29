@@ -5,6 +5,8 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:kushi_3/pages/notifications.dart';
 import 'package:kushi_3/model/globals.dart' as globals;
 import 'package:kushi_3/components/settingButtons.dart';
+import 'package:kushi_3/service/auth_service.dart';
+import 'package:provider/provider.dart';
 
 
 class profilePage extends StatefulWidget {
@@ -22,6 +24,11 @@ class _profilePageState extends State<profilePage> {
     super.initState();
     name = widget.namey; // Accessing namey from the widget instance
   }
+
+  // Future<void> signOut() async {
+  //   final _authService = Provider.of<AuthService>(context,listen:false);
+  //   _authService.signOut();
+  // }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,7 +47,7 @@ class _profilePageState extends State<profilePage> {
                 child: Row(
                   children: [
                     Stack(
-                
+
                       children: <Widget>[
                         Container(
                           width: 140, // Adjust according to your needs
@@ -203,41 +210,13 @@ class _profilePageState extends State<profilePage> {
             const SizedBox(height: 10,),
             settingButton(
                 text: "Sign out",
-                onTap: () => () {}
+                onTap: (){
+                  final _authService = AuthService();
+                _authService.signOut();},
             ),
 
           ]
         ),
-        bottomNavigationBar: GNav(
-          selectedIndex: 4,
-          backgroundColor: Theme.of(context).colorScheme.background,
-          color: Theme.of(context).colorScheme.primary,
-          activeColor: Theme.of(context).colorScheme.background,
-          tabBackgroundColor: Theme.of(context).colorScheme.primary,
-          onTabChange: (value) {},
-          gap: 0,
-          tabs: [
-            const GButton(
-              icon: Icons.home_outlined,
-              // text: "home"
-            ),
-            const GButton(
-              icon: Icons.person_2_outlined,
-              // text: "home"
-            ),
-            const GButton(
-              icon: Icons.home,
-              // text: "home"
-            ),
-            const GButton(
-              icon: Icons.home,
-              // text: "home"/
-            ),
-            const GButton(
-              icon: Icons.home,
-              // text: "home"/
-            ),
-          ],
-        ));
+       );
   }
 }

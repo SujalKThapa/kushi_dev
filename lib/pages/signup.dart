@@ -1,14 +1,43 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:kushi_3/components/mybutton.dart';
 import 'package:kushi_3/components/sign_in_with.dart';
 import 'package:kushi_3/components/textfield.dart';
 import 'package:kushi_3/pages/otp.dart';
 import 'package:kushi_3/pages/selectGender.dart';
+import 'package:kushi_3/pages/selectWeight.dart';
+import 'package:kushi_3/service/auth_service.dart';
+import 'package:provider/provider.dart';
 
-class SignUp extends StatelessWidget {
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+class SignUp extends StatefulWidget {
+
   SignUp({super.key});
+
+  @override
+  State<SignUp> createState() => _SignUpState();
+}
+
+class _SignUpState extends State<SignUp> {
+  final TextEditingController _fullnameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _phonenNumberController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+
+  void signUp(BuildContext context) async{
+    final _authService = Provider.of<AuthService>(context,listen:false);
+    try{
+      await _authService.signUpWithEmailandPassword(_emailController.text, _passwordController.text,_fullnameController.text,_phonenNumberController.text);
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => SelectWeight()));
+    }catch(e){
+
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,25 +63,30 @@ class SignUp extends StatelessWidget {
             MyTextField(
               hintText: "Full Name",
               obscureText: false,
-              controller: _usernameController,
+              controller: _fullnameController,
+
             ),
             const SizedBox(height: 25,),
             MyTextField(
               hintText: "Email",
-              obscureText: true,
-              controller: _passwordController,
+              obscureText: false,
+              controller: _emailController,
+
+
             ),
             const SizedBox(height: 25,),
             MyTextField(
               hintText: "Phone Number",
-              obscureText: true,
-              controller: _passwordController,
+              obscureText: false,
+              controller: _phonenNumberController,
+
             ),
             const SizedBox(height: 25,),
             MyTextField(
               hintText: "Password",
               obscureText: true,
               controller: _passwordController,
+
             ),
             const SizedBox(height: 10,),
             Text("By continuing you accept our Privacy Policy",
@@ -63,12 +97,7 @@ class SignUp extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10,),
-            MyButton(text: "Sign Up", onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => OTPVerificationPage()));
-            },
+            MyButton(text: "Sign Up", onTap:() =>signUp(context),
             ),
             const SizedBox(height: 15,),
             const SizedBox(height:50,),

@@ -1,4 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:kushi_3/pages/introslider.dart';
+import 'package:kushi_3/pages/mainactivity.dart';
+import 'package:kushi_3/service/auth_gate.dart';
+import 'package:kushi_3/service/auth_service.dart';
+import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:kushi_3/pages/signin.dart';
@@ -11,7 +16,11 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   ); // Asynchronously initialize Firebase
-  runApp(MyApp()); // Run your application
+  runApp(
+    ChangeNotifierProvider(create: (context)=> AuthService(),
+      child: MyApp(),
+    )
+  ); // Run your application
 }
 
 class MyApp extends StatelessWidget {
@@ -22,13 +31,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      
         title: "flutter demo",
-      
         theme: lightMode,
         darkTheme: darkMode,
 
-      home: SignIn(),
+      home: AuthGate(),
     );
   }
 }
