@@ -10,6 +10,7 @@ import 'package:kushi_3/pages/signin.dart';
 import 'package:kushi_3/themes/dark_mode.dart';
 import 'package:kushi_3/themes/light_mode.dart';
 import 'package:kushi_3/model/globals.dart' as globals;
+import 'package:kushi_3/pages/testingPages/stepTest.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Ensures all plugins are initialized
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
         theme: lightMode,
         darkTheme: darkMode,
 
-      home: AuthGate(),
+      home: stepTest(),
     );
   }
 }
