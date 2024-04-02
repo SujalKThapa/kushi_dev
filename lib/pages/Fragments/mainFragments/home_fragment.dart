@@ -6,10 +6,25 @@ import 'package:line_icons/line_icon.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'dart:math' as math;
+import 'package:flutter_health_connect/flutter_health_connect.dart';
+
+class HomeFragment extends StatefulWidget{
+  const HomeFragment({super.key});
+
+  @override
+  State<HomeFragment> createState() => Home_Fragment();
+}
 
 
-class Home_Fragment extends StatelessWidget {
-  const Home_Fragment({super.key});
+
+class Home_Fragment extends State<HomeFragment> {
+
+  List<HealthConnectDataType> types = [
+    HealthConnectDataType.Steps
+  ];
+  bool readOnly = false;
+  String resultText = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

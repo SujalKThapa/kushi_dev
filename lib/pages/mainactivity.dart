@@ -22,7 +22,7 @@ class _MainActivityState extends State<MainActivity> {
   int _selectedIndex = 0;
 
   static  final List<Widget> _widgetOptions = <Widget>[
-    Home_Fragment(),
+    HomeFragment(),
     Group_Fragment(),
     Container(color: Colors.green,),
     Container(color: Colors.red,),
