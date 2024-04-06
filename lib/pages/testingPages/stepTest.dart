@@ -103,8 +103,10 @@ class stepTestState extends State<stepTest> {
                 try {
                   var result = await HealthConnectFactory.getChanges(token);
                   resultText = 'token: $result';
+                  print(resultText);
                 } catch (e) {
                   resultText = e.toString();
+                  print(resultText);
                 }
                 _updateResultText();
               },
@@ -144,6 +146,7 @@ class stepTestState extends State<stepTest> {
                   resultText = '$typePoints';
                 } catch (e) {
                   resultText = e.toString();
+                  print(resultText);
                 }
                 _updateResultText();
               },
