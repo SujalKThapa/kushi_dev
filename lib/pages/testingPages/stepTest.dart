@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_health_connect/flutter_health_connect.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 
 class stepTest extends StatefulWidget{
@@ -152,7 +153,10 @@ class stepTestState extends State<stepTest> {
               },
               child: const Text('Get Record'),
             ),
+
+
             Text(resultText),
+
           ],
         ),
       ),

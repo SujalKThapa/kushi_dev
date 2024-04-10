@@ -49,6 +49,7 @@ dependencies:
   percent_indicator: ^4.2.3
   google_sign_in: ^6.2.1
   flutter_health_connect: ^1.2.3
+  permission_handler: ^11.3.1
   
 
 
