@@ -1,4 +1,4 @@
-
+import 'package:kushi_3/service/auth_gate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_health_connect/flutter_health_connect.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -31,7 +31,7 @@ class stepTestState extends State<stepTest> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Health Connect'),
+          title: const Text('Health Connect Permission Page'),
         ),
         body: ListView(
           padding: const EdgeInsets.all(16),
@@ -73,6 +73,7 @@ class stepTestState extends State<stepTest> {
                   resultText = e.toString();
                 }
                 _updateResultText();
+
               },
               child: const Text('Open Health Connect Settings'),
             ),
@@ -86,47 +87,6 @@ class stepTestState extends State<stepTest> {
                 _updateResultText();
               },
               child: const Text('Has Permissions'),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                try {
-                  token = await HealthConnectFactory.getChangesToken(types);
-                  resultText = 'token: $token';
-                } catch (e) {
-                  resultText = e.toString();
-                }
-                _updateResultText();
-              },
-              child: const Text('Get Changes Token'),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                try {
-                  var result = await HealthConnectFactory.getChanges(token);
-                  resultText = 'token: $result';
-                  print(resultText);
-                } catch (e) {
-                  resultText = e.toString();
-                  print(resultText);
-                }
-                _updateResultText();
-              },
-              child: const Text('Get Changes'),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                try {
-                  var result = await HealthConnectFactory.requestPermissions(
-                    types,
-                    readOnly: readOnly,
-                  );
-                  resultText = 'requestPermissions: $result';
-                } catch (e) {
-                  resultText = e.toString();
-                }
-                _updateResultText();
-              },
-              child: const Text('Request Permissions'),
             ),
             ElevatedButton(
               onPressed: () async {
@@ -144,17 +104,24 @@ class stepTestState extends State<stepTest> {
                     ).then((value) => typePoints.addAll({type.name: value})));
                   }
                   await Future.wait(requests);
-                  resultText = '$typePoints';
+                  var steps = typePoints['Steps']['records'][0]['count'];
+                  resultText = '$steps';
                 } catch (e) {
                   resultText = e.toString();
                   print(resultText);
                 }
                 _updateResultText();
               },
-              child: const Text('Get Record'),
+              child: const Text('Get Steps'),
             ),
-
-
+            ElevatedButton(onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AuthGate()),
+              );
+            },
+            child: const Text('Move to Main')),
+            SizedBox(height: 50,),
             Text(resultText),
 
           ],
