@@ -90,6 +90,21 @@ class stepTestState extends State<stepTest> {
             ),
             ElevatedButton(
               onPressed: () async {
+                try {
+                  var result = await HealthConnectFactory.requestPermissions(
+                    types,
+                    readOnly: readOnly,
+                  );
+                  resultText = 'requestPermissions: $result';
+                } catch (e) {
+                  resultText = e.toString();
+                }
+                _updateResultText();
+              },
+              child: const Text('Request Permissions'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
                 var startTime =
                 DateTime.now().subtract(const Duration(days: 4));
                 var endTime = DateTime.now();
@@ -104,8 +119,12 @@ class stepTestState extends State<stepTest> {
                     ).then((value) => typePoints.addAll({type.name: value})));
                   }
                   await Future.wait(requests);
-                  var steps = typePoints['Steps']['records'][0]['count'];
-                  resultText = '$steps';
+                  var stepList = typePoints['Steps']['records'];
+                  var totalSteps = 0;
+                  for(var step in stepList){
+                    totalSteps+=step['count'] as int;
+                  }
+                  resultText = '$totalSteps';
                 } catch (e) {
                   resultText = e.toString();
                   print(resultText);

@@ -7,6 +7,7 @@ import 'package:line_icons/line_icons.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'dart:math' as math;
 import 'package:flutter_health_connect/flutter_health_connect.dart';
+import 'dart:async';
 
 class HomeFragment extends StatefulWidget{
   const HomeFragment({super.key});
@@ -16,7 +17,6 @@ class HomeFragment extends StatefulWidget{
 }
 
 
-
 class Home_Fragment extends State<HomeFragment> {
 
   List<HealthConnectDataType> types = [
@@ -24,6 +24,27 @@ class Home_Fragment extends State<HomeFragment> {
   ];
   bool readOnly = false;
   String resultText = '';
+
+
+  Future<int> fetchTotalSteps() async {
+    var startTime = DateTime.now().subtract(const Duration(days: 4));
+    var endTime = DateTime.now();
+    final requests = <Future>[];
+    Map<String, dynamic> typePoints = {};
+    for (var type in types) {
+      requests.add(HealthConnectFactory.getRecord(
+        type: type,
+        startTime: startTime,
+        endTime: endTime,
+      ).then((value) => typePoints.addAll({type.name: value})));
+    }
+    await Future.wait(requests);var stepList = typePoints['Steps']['records'];
+    var totalSteps = 0;
+    for(var step in stepList){
+      totalSteps+=step['count'] as int;
+    }
+    return totalSteps;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +123,7 @@ class Home_Fragment extends State<HomeFragment> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           'Total Steps',
                           style: TextStyle(
                               fontSize: 24,
@@ -114,9 +135,28 @@ class Home_Fragment extends State<HomeFragment> {
                         SizedBox(height: 0), // Add some space between the text and the box
                         Padding(
                           padding: const EdgeInsets.only(left: 25.0),
-                          child: Text(
-                            '2,760',
-                            style: TextStyle(fontSize: 30, color: Colors.grey[600]),
+                          child: FutureBuilder<int>(
+                            future: fetchTotalSteps(),
+                            builder: (context, snapshot) {
+                              if(snapshot.connectionState == ConnectionState.waiting){
+                                return Text(
+                                  'Waiting',
+                                  style: TextStyle(fontSize: 30, color: Colors.grey[600]),
+                                );
+                              }
+                              else if(snapshot.hasError){
+                                return Text(
+                                  'Error',
+                                  style: TextStyle(fontSize: 30, color: Colors.grey[600]),
+                                );
+                              }
+                              else{
+                                return Text(
+                                  '${snapshot.data}',
+                                  style: TextStyle(fontSize: 30, color: Colors.grey[600]),
+                                );
+                              }
+                            }
                           ),
                         ),
                       ],
