@@ -20,7 +20,8 @@ class HomeFragment extends StatefulWidget{
 class Home_Fragment extends State<HomeFragment> {
 
   List<HealthConnectDataType> types = [
-    HealthConnectDataType.Steps
+    HealthConnectDataType.Steps,
+    HealthConnectDataType.ActiveCaloriesBurned
   ];
   bool readOnly = false;
   String resultText = '';
