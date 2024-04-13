@@ -8,6 +8,7 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'dart:math' as math;
 import 'package:flutter_health_connect/flutter_health_connect.dart';
 import 'dart:async';
+import 'dart:developer' as developer;
 
 class HomeFragment extends StatefulWidget{
   const HomeFragment({super.key});
@@ -21,14 +22,20 @@ class Home_Fragment extends State<HomeFragment> {
 
   List<HealthConnectDataType> types = [
     HealthConnectDataType.Steps,
-    HealthConnectDataType.ActiveCaloriesBurned
+    HealthConnectDataType.TotalCaloriesBurned
   ];
   bool readOnly = false;
   String resultText = '';
 
 
   Future<int> fetchTotalSteps() async {
-    var startTime = DateTime.now().subtract(const Duration(days: 4));
+    var startTime = DateTime.now().subtract(Duration(
+      hours: DateTime.now().hour,
+      minutes: DateTime.now().minute,
+      seconds: DateTime.now().second,
+      milliseconds: DateTime.now().millisecond,
+      microseconds: DateTime.now().microsecond,
+    ));
     var endTime = DateTime.now();
     final requests = <Future>[];
     Map<String, dynamic> typePoints = {};
@@ -45,6 +52,40 @@ class Home_Fragment extends State<HomeFragment> {
       totalSteps+=step['count'] as int;
     }
     return totalSteps;
+  }
+
+  Future<int> fetchTotalCalories() async {
+    var startTime = DateTime.now().subtract(Duration(
+      hours: DateTime.now().hour,
+      minutes: DateTime.now().minute,
+      seconds: DateTime.now().second,
+      milliseconds: DateTime.now().millisecond,
+      microseconds: DateTime.now().microsecond,
+    ));
+    var endTime = DateTime.now();
+    final requests = <Future>[];
+    Map<String, dynamic> typePoints = {};
+    for (var type in types) {
+      requests.add(HealthConnectFactory.getRecord(
+        type: type,
+        startTime: startTime,
+        endTime: endTime,
+      ).then((value) => typePoints.addAll({type.name: value})));
+    }
+    await Future.wait(requests);
+    typePoints = typePoints['TotalCaloriesBurned'];
+    var totalEnergy = 0.0;
+    var counter = 0;
+    for (var record in typePoints.values){
+      if(counter == 1){
+        break;
+      }
+      for(var energy in record){
+        totalEnergy += energy['energy']['kilocalories'].toInt();
+      }
+      counter++;
+    }
+    return totalEnergy.toInt();
   }
 
   @override
@@ -115,8 +156,8 @@ class Home_Fragment extends State<HomeFragment> {
                       borderRadius: BorderRadius.circular(10), // Adjust border radius as needed
                     ),
                     child: Center(
-                      child: Icon(Icons.directions_walk_rounded,size: 50,
-                      color: Color(0xFFF75858),)
+                        child: Icon(Icons.directions_walk_rounded,size: 50,
+                          color: Color(0xFFF75858),)
                     ),
                   ),
                   SizedBox(width: 10), // Add some space between the box and the text
@@ -137,27 +178,28 @@ class Home_Fragment extends State<HomeFragment> {
                         Padding(
                           padding: const EdgeInsets.only(left: 25.0),
                           child: FutureBuilder<int>(
-                            future: fetchTotalSteps(),
-                            builder: (context, snapshot) {
-                              if(snapshot.connectionState == ConnectionState.waiting){
-                                return Text(
-                                  'Waiting',
-                                  style: TextStyle(fontSize: 30, color: Colors.grey[600]),
-                                );
+                              future: fetchTotalSteps(),
+                              builder: (context, snapshot) {
+                                if(snapshot.connectionState == ConnectionState.waiting){
+                                  return Text(
+                                    'Waiting',
+                                    style: TextStyle(fontSize: 30, color: Colors.grey[600]),
+                                  );
+                                }
+                                else if(snapshot.hasError){
+                                  developer.log(snapshot.error.toString());
+                                  return Text(
+                                    'Error',
+                                    style: TextStyle(fontSize: 30, color: Colors.grey[600]),
+                                  );
+                                }
+                                else{
+                                  return Text(
+                                    '${snapshot.data}',
+                                    style: TextStyle(fontSize: 30, color: Colors.grey[600]),
+                                  );
+                                }
                               }
-                              else if(snapshot.hasError){
-                                return Text(
-                                  'Error',
-                                  style: TextStyle(fontSize: 30, color: Colors.grey[600]),
-                                );
-                              }
-                              else{
-                                return Text(
-                                  '${snapshot.data}',
-                                  style: TextStyle(fontSize: 30, color: Colors.grey[600]),
-                                );
-                              }
-                            }
                           ),
                         ),
                       ],
@@ -223,11 +265,11 @@ class Home_Fragment extends State<HomeFragment> {
                             borderRadius: BorderRadius.circular(10), // Adjust border radius as needed
                           ),
                           child: Center(
-                            child: Image.asset(
-                              "assets/icons/calorie.png",
-                              height:30 ,
-                              width: 30,
-                            )
+                              child: Image.asset(
+                                "assets/icons/calorie.png",
+                                height:30 ,
+                                width: 30,
+                              )
                           ),
                         ),
                         SizedBox(width: 10), // Add some space between the box and the text
@@ -241,10 +283,29 @@ class Home_Fragment extends State<HomeFragment> {
                               ),
                               SizedBox(height: 0), // Add some space between the text and the box
                               Padding(
-                                padding: const EdgeInsets.only(left: 14.0),
-                                child: Text(
-                                  '6215',
-                                  style: TextStyle(fontSize: 20, color: Colors.grey[600]),
+                                padding: const EdgeInsets.only(left: 25.0),
+                                child: FutureBuilder<int>(
+                                    future: fetchTotalCalories(),
+                                    builder: (context, snapshot) {
+                                      if(snapshot.connectionState == ConnectionState.waiting){
+                                        return Text(
+                                          'Waiting',
+                                          style: TextStyle(fontSize: 30, color: Colors.grey[600]),
+                                        );
+                                      }
+                                      else if(snapshot.hasError){
+                                        return Text(
+                                          'Error',
+                                          style: TextStyle(fontSize: 30, color: Colors.grey[600]),
+                                        );
+                                      }
+                                      else{
+                                        return Text(
+                                          '${snapshot.data}',
+                                          style: TextStyle(fontSize: 30, color: Colors.grey[600]),
+                                        );
+                                      }
+                                    }
                                 ),
                               ),
                             ],
