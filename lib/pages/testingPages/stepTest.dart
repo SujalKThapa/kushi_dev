@@ -2,6 +2,7 @@ import 'package:kushi_3/service/auth_gate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_health_connect/flutter_health_connect.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'dart:developer' as developer;
 
 
 class stepTest extends StatefulWidget{
@@ -15,6 +16,7 @@ class stepTestState extends State<stepTest> {
 
   List<HealthConnectDataType> types = [
     HealthConnectDataType.Steps,
+    HealthConnectDataType.TotalCaloriesBurned
     // HealthConnectDataType.HeartRate,
     // HealthConnectDataType.SleepSession,
     // HealthConnectDataType.OxygenSaturation,
@@ -105,8 +107,13 @@ class stepTestState extends State<stepTest> {
             ),
             ElevatedButton(
               onPressed: () async {
-                var startTime =
-                DateTime.now().subtract(const Duration(days: 4));
+                var startTime = DateTime.now().subtract(Duration(
+                  hours: DateTime.now().hour,
+                  minutes: DateTime.now().minute,
+                  seconds: DateTime.now().second,
+                  milliseconds: DateTime.now().millisecond,
+                  microseconds: DateTime.now().microsecond,
+                ));
                 var endTime = DateTime.now();
                 try {
                   final requests = <Future>[];
@@ -132,6 +139,49 @@ class stepTestState extends State<stepTest> {
                 _updateResultText();
               },
               child: const Text('Get Steps'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                var startTime = DateTime.now().subtract(Duration(
+                hours: DateTime.now().hour,
+                minutes: DateTime.now().minute,
+                seconds: DateTime.now().second,
+                milliseconds: DateTime.now().millisecond,
+                microseconds: DateTime.now().microsecond,
+              ));
+              var endTime = DateTime.now();
+                try {
+                  final requests = <Future>[];
+                  Map<String, dynamic> typePoints = {};
+                  for (var type in types) {
+                    requests.add(HealthConnectFactory.getRecord(
+                      type: type,
+                      startTime: startTime,
+                      endTime: endTime,
+                    ).then((value) => typePoints.addAll({type.name: value})));
+                  }
+                  await Future.wait(requests);
+                  typePoints = typePoints['TotalCaloriesBurned'];
+                  var totalEnergy = 0.0;
+                  var counter = 0;
+                  for (var record in typePoints.values){
+                    if(counter == 1){
+                      break;
+                    }
+                    for(var energy in record){
+                      totalEnergy += energy['energy']['kilocalories'].toInt();
+                    }
+                    developer.log(totalEnergy.toString());
+                    counter++;
+                  }
+                  resultText = '$totalEnergy';
+                } catch (e) {
+                  resultText = e.toString();
+                  print(resultText);
+                }
+                _updateResultText();
+              },
+              child: const Text('Get Calories'),
             ),
             ElevatedButton(onPressed: () {
               Navigator.push(
