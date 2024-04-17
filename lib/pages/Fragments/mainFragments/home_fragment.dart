@@ -27,6 +27,32 @@ class Home_Fragment extends State<HomeFragment> {
   bool readOnly = false;
   String resultText = '';
 
+  Future<int> fetchTotalTime() async {
+    var startTime = DateTime.now().subtract(Duration(
+      hours: DateTime.now().hour,
+      minutes: DateTime.now().minute,
+      seconds: DateTime.now().second,
+      milliseconds: DateTime.now().millisecond,
+      microseconds: DateTime.now().microsecond,
+    ));
+    var endTime = DateTime.now();
+    final requests = <Future>[];
+    Map<String, dynamic> typePoints = {};
+    for (var type in types) {
+      requests.add(HealthConnectFactory.getRecord(
+        type: type,
+        startTime: startTime,
+        endTime: endTime,
+      ).then((value) => typePoints.addAll({type.name: value})));
+    }
+    await Future.wait(requests);
+    var stepList = typePoints['Steps']['records'];
+    var timeTotal = 0;
+    for(var step in stepList){
+      timeTotal += (step['endTime']['epochSecond'] - step['startTime']['epochSecond']) as int;
+    }
+    return timeTotal;
+  }
 
   Future<int> fetchTotalSteps() async {
     var startTime = DateTime.now().subtract(Duration(
@@ -46,11 +72,17 @@ class Home_Fragment extends State<HomeFragment> {
         endTime: endTime,
       ).then((value) => typePoints.addAll({type.name: value})));
     }
-    await Future.wait(requests);var stepList = typePoints['Steps']['records'];
+    await Future.wait(requests);
+    var stepList = typePoints['Steps']['records'];
+    var timeTotal = 0;
+    //developer.log(typePoints.toString());
     var totalSteps = 0;
     for(var step in stepList){
       totalSteps+=step['count'] as int;
+      //developer.log((step['endTime']['epochSecond'] - step['startTime']['epochSecond']).toString());
+      timeTotal += (step['endTime']['epochSecond'] - step['startTime']['epochSecond']) as int;
     }
+    developer.log(timeTotal.toString());
     return totalSteps;
   }
 
@@ -196,7 +228,7 @@ class Home_Fragment extends State<HomeFragment> {
                                 else{
                                   return Text(
                                     '${snapshot.data}',
-                                    style: TextStyle(fontSize: 30, color: Colors.grey[600]),
+                                    style: TextStyle(fontSize: 20, color: Colors.grey[600]),
                                   );
                                 }
                               }
@@ -207,6 +239,7 @@ class Home_Fragment extends State<HomeFragment> {
                   ),
                 ],
               ),
+              SizedBox(height: 25,),
               Row(
                 children: [
                   Expanded(
@@ -240,9 +273,48 @@ class Home_Fragment extends State<HomeFragment> {
                               SizedBox(height: 0), // Add some space between the text and the box
                               Padding(
                                 padding: const EdgeInsets.only(left: .0),
-                                child: Text(
-                                  '2 hours',
-                                  style: TextStyle(fontSize: 20, color: Colors.grey[600]),
+                                child: FutureBuilder<int>(
+                                    future: fetchTotalTime(),
+                                    builder: (context, snapshot) {
+                                      if(snapshot.connectionState == ConnectionState.waiting){
+                                        return Text(
+                                          'Waiting',
+                                          style: TextStyle(fontSize: 30, color: Colors.grey[600]),
+                                        );
+                                      }
+                                      else if(snapshot.hasError){
+                                        developer.log(snapshot.error.toString());
+                                        return Text(
+                                          'Error',
+                                          style: TextStyle(fontSize: 30, color: Colors.grey[600]),
+                                        );
+                                      }
+                                      else{
+                                        int hours = snapshot.data! ~/ 3600;
+                                        int min = snapshot.data! % 60;
+                                        if(hours > 1) {
+                                          return Text(
+                                            '${hours}hr${min}min',
+                                            style: TextStyle(fontSize: 18,
+                                                color: Colors.grey[600]),
+                                          );
+                                        }
+                                        else if(min > 1) {
+                                          return Text(
+                                            '${min}min',
+                                            style: TextStyle(fontSize: 30,
+                                                color: Colors.grey[600]),
+                                          );
+                                        }
+                                        else{
+                                          return Text(
+                                            'No Excercise',
+                                            style: TextStyle(fontSize: 30,
+                                                color: Colors.grey[600]),
+                                          );
+                                        }
+                                      }
+                                    }
                                 ),
                               ),
                             ],
@@ -283,7 +355,7 @@ class Home_Fragment extends State<HomeFragment> {
                               ),
                               SizedBox(height: 0), // Add some space between the text and the box
                               Padding(
-                                padding: const EdgeInsets.only(left: 25.0),
+                                padding: const EdgeInsets.only(left: 5.0),
                                 child: FutureBuilder<int>(
                                     future: fetchTotalCalories(),
                                     builder: (context, snapshot) {
@@ -302,7 +374,7 @@ class Home_Fragment extends State<HomeFragment> {
                                       else{
                                         return Text(
                                           '${snapshot.data}',
-                                          style: TextStyle(fontSize: 30, color: Colors.grey[600]),
+                                          style: TextStyle(fontSize: 18, color: Colors.grey[600]),
                                         );
                                       }
                                     }
