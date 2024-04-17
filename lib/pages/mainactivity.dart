@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:kushi_3/pages/Fragments/mainFragments/group_fragment.dart';
 import 'package:kushi_3/pages/Fragments/mainFragments/home_fragment.dart';
+import 'package:kushi_3/pages/Fragments/mainFragments/screen_1.dart';
 import 'package:kushi_3/pages/notifications.dart';
 import 'package:kushi_3/pages/profilePage.dart';
 import 'package:kushi_3/model/globals.dart' as globals;
@@ -24,7 +25,8 @@ class _MainActivityState extends State<MainActivity> {
   static  final List<Widget> _widgetOptions = <Widget>[
     HomeFragment(),
     Group_Fragment(),
-    Container(color: Colors.green,),
+    // Container(color: Colors.green,),
+    ActivityPage(),
     Container(color: Colors.red,),
     Profile_Fragment(namey: globals.userName),
 

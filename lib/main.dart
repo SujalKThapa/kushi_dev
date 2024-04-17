@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:kushi_3/pages/introslider.dart';
 import 'package:kushi_3/pages/mainactivity.dart';
+import 'package:kushi_3/pages/otp.dart';
 import 'package:kushi_3/service/auth_gate.dart';
 import 'package:kushi_3/service/auth_service.dart';
 import 'package:provider/provider.dart';
@@ -35,8 +36,12 @@ class MyApp extends StatelessWidget {
         title: "flutter demo",
         theme: lightMode,
         darkTheme: darkMode,
+        routes: {
+          '/OTPPage': (context) => OTPVerificationPage(),
+          '/test_page': (context) => stepTest(),
+        },
 
-      home: stepTest(),
+      home: SignIn(),
     );
   }
 }

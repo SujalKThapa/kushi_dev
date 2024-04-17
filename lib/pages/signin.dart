@@ -1,9 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:kushi_3/components/mybutton.dart';
 import 'package:kushi_3/components/sign_in_with.dart';
 import 'package:kushi_3/components/textfield.dart';
 import 'package:kushi_3/pages/mainactivity.dart';
+import 'package:kushi_3/pages/otp.dart';
 import 'package:kushi_3/pages/selectGender.dart';
 import 'package:kushi_3/pages/signup.dart';
 import 'package:kushi_3/service/auth_service.dart';
@@ -14,61 +17,27 @@ import 'package:kushi_3/model/globals.dart' as globals;
 class SignIn extends StatefulWidget {
 
   SignIn({super.key});
-
+  static String verify="";
   @override
   State<SignIn> createState() => _SignInState();
 }
 
 class _SignInState extends State<SignIn> {
-  final TextEditingController _usernameController = TextEditingController();
 
-  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController countryCode = TextEditingController();
+  final TextEditingController phoneNumber= TextEditingController();
 
-  String? _validateEmail(String value) {
 
-      if (value == null || value.isEmpty) {
-        return 'Please enter your email';
-      }
-      // Basic email validation using regex
-      if (!RegExp(
-          r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
-          .hasMatch(value)) {
-        return 'Please enter a valid email';
-      }
-      return null;
 
+  @override
+  void initState(){
+    countryCode.text = "+91";
+    super.initState();
   }
 
-  String? _validatePassword(String value) {
-    if (value.isEmpty) {
-      return 'Please enter your password';
-    }
-    // You can add more complex password validation here if needed
-    return null;
-  }
 
-  signIn(BuildContext context) async{
 
-      try{
-        UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-            email: _usernameController.text.trim(),
-            password: _passwordController.text.trim()
-        );
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => MainActivity(namey: globals.userName)),
-        );
-      }
-      catch (e){
-        print("Failed to sign in: $e");
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("Failed to sign in. Please check your credentials."),
-          ),
-        );
-      }
 
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +56,7 @@ class _SignInState extends State<SignIn> {
               const SizedBox(height: 230,),
         
               const Text(
-                "Sign In",
+                "Phone Verification",
                 style: TextStyle(
                   fontWeight: FontWeight.w700,
         
@@ -97,45 +66,78 @@ class _SignInState extends State<SignIn> {
               ),
         
               const SizedBox(height: 25,),
-        
-              MyTextField(
-                hintText: "Phone Number",
-                obscureText: false,
-                controller: _usernameController,
-
-              ),
-              const SizedBox(height: 25,),
-              MyTextField(
-                hintText: "Password",
-                obscureText: true,
-
-                controller: _passwordController,
-
-
-              ),
-              const SizedBox(height: 50,),
-              MyButton(text: "Sign in", onTap: ()=> signIn(context)
-              ),
-              const SizedBox(height: 15,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-        
-                  GestureDetector(
-                    onTap: () {
-
-                    },
-                    child: Text("Forgot password?",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.inversePrimary,
-        
-        
+              Container(
+                height: 55,
+                margin: EdgeInsets.only(left: 30,right: 30),
+                decoration: BoxDecoration(
+                  border: Border.all(width :1,color: Colors.black),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 10,
+                    ),
+                    SizedBox(
+                      width: 40,
+                      child: TextField(
+                        controller: countryCode ,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                    SizedBox(width: 10 ,),
+                    Text("|",
+                      style: TextStyle(
+                        fontSize: 33,
+                      ),
+                    ),
+                    Expanded(
+
+                      child: TextField(
+                        controller: phoneNumber,
+                        keyboardType: TextInputType.phone,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly,
+                          LengthLimitingTextInputFormatter(10), // Limit to 10 characters
+                          _PhoneNumberFormatter(), // Custom input formatter for phone number
+                        ],
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "Phone",
+
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ),
+
+
+              SizedBox(height: 50,),
+              MyButton(text: "Send the code", onTap: ()async{
+                await FirebaseAuth.instance.verifyPhoneNumber(
+                  phoneNumber: '${countryCode.text} ${phoneNumber.text}' ,
+                  verificationCompleted: (PhoneAuthCredential credential) {},
+                  verificationFailed: (FirebaseAuthException e) {},
+                  codeSent: (String verificationId, int? resendToken) {
+                    SignIn.verify= verificationId;
+                    Navigator.pushNamed(
+                        context,
+                        '/OTPPage',
+                        arguments: "${countryCode.text} ${phoneNumber.text}"
+                    );
+                  },
+                  codeAutoRetrievalTimeout: (String verificationId) {},
+
+                );
+
+
+              }
+              ),
+              const SizedBox(height: 15,),
+
               const SizedBox(height:50,),
         
               const Text("Sign In With", style: TextStyle(
@@ -143,7 +145,7 @@ class _SignInState extends State<SignIn> {
                 fontSize: 25,
               ),),
                Row(
-        
+
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   GestureDetector(
@@ -153,53 +155,33 @@ class _SignInState extends State<SignIn> {
                   // SquareTile(imagePath: 'assets/icons/google.png',),
                   SizedBox(width: 10,),
                   SquareTile(imagePath: 'assets/icons/apple.png',)
-        
-        
+
+
                 ],
               ),
         
-              Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text("Don't have an account?",
-        
-                      style:TextStyle(
-        
-                        fontSize: 10,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    TextButton(onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(builder:(context){
-                            return SignUp();
-                          })
-                      );
-                    },
-                        child:  Text(
-                          "Sign Up",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).colorScheme.inversePrimary,
-                            fontSize: 10,
-                            decoration: TextDecoration.underline,
-                            decorationThickness: 2.0,
-        
-        
-                          ),
-                        ))
-        
-                  ],
-                ),
-              )
-        
-        
+
+
+
             ],
           ),
         ),
       ),
     );
+  }
+}
+
+class _PhoneNumberFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    if (newValue.text.length == 1) {
+      return newValue.copyWith(
+        text: '${newValue.text}', // Automatically add '+' at the beginning
+        selection: TextSelection.collapsed(offset: newValue.text.length ),
+      );
+    } else {
+      return newValue;
+    }
   }
 }

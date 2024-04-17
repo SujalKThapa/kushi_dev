@@ -1,14 +1,26 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:kushi_3/components/mybutton.dart';
 import 'package:kushi_3/pages/selectGender.dart';
+import 'package:kushi_3/pages/signin.dart';
+import 'package:pinput/pinput.dart';
 
 class OTPVerificationPage extends StatefulWidget {
+
+
+  OTPVerificationPage({
+    super.key,
+
+  });
+
   @override
   _OTPVerificationPageState createState() => _OTPVerificationPageState();
 }
 
 class _OTPVerificationPageState extends State<OTPVerificationPage> {
   late List<TextEditingController> _controllers;
+  final FirebaseAuth auth = FirebaseAuth.instance;
 
   @override
   void initState() {
@@ -22,15 +34,19 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
     super.dispose();
   }
 
-  void _verifyOTP() {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => SelectGender()));
+  void _verifyOTP() async{
+    try{
+
+    }catch(ex){
+
+    }
+
   }
 
   @override
   Widget build(BuildContext context) {
+    var code ="";
+    final String data = ModalRoute.of(context)!.settings.arguments as String;
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.only(bottom: 20, left: 20, right: 20),
@@ -63,7 +79,7 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                       child: Row(
                         children: [
                           Text(
-                            "9048957891",
+                            data,
                             style: TextStyle(
                               color: Theme.of(context).colorScheme.primary,
                               fontWeight: FontWeight.w400,
@@ -89,33 +105,26 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                     ),
                   ],
                 )),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: List.generate(
-                6,
-                    (index) => SizedBox(
-                  width: 50,
-                  child: TextField(
-                    controller: _controllers[index],
-                    keyboardType: TextInputType.number,
-                    textAlign: TextAlign.center,
+            Pinput(
+              length:6,
+              showCursor:true,
+              onChanged: (value){
+                  code = value;
+              },
 
-                    maxLength: 1,
-                    decoration: InputDecoration(
-                      counterText: "",
-                      border: OutlineInputBorder(),
-                    ),
-                    onChanged: (value) {
-                      if (value.isNotEmpty && index < 5) {
-                        FocusScope.of(context).nextFocus();
-                      }
-                    },
-                  ),
-                ),
-              ),
             ),
             SizedBox(height: 20.0),
-            MyButton(text: "Verify OTP", onTap: _verifyOTP)
+            MyButton(text: "Verify OTP", onTap: ()async{
+              try{
+                PhoneAuthCredential credential =  PhoneAuthProvider.credential(verificationId: SignIn.verify, smsCode: code);
+                await auth.signInWithCredential(credential);
+                Navigator.pushNamedAndRemoveUntil(context, '/test_page',(route) => false);
+              }catch(e){
+                  print("wrong otp");
+              }
+
+
+            })
           ],
         ),
       ),
