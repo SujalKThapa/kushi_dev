@@ -25,58 +25,26 @@ class Home_Fragment extends State<HomeFragment> {
   bool readOnly = false;
   String resultText = '';
 
-  double getPercentage(int steps){
-    return (steps/10000).toDouble();
-  }
-  // Future<int> fetchTotalSteps() async {
-  //   var startTime = DateTime.now().subtract(const Duration(days: 1));
-  //   var endTime = DateTime.now();
-  //   final requests = <Future>[];
-  //   Map<String, dynamic> typePoints = {};
-  //   for (var type in types) {
-  //     requests.add(HealthConnectFactory.getRecord(
-  //       type: type,
-  //       startTime: startTime,
-  //       endTime: endTime,
-  //     ).then((value) => typePoints.addAll({type.name: value})));
-  //   }
-  //   await Future.wait(requests);var stepList = typePoints['Steps']['records'];
-  //   var totalSteps = 0;
-  //   for(var step in stepList){
-  //     totalSteps+=step['count'] as int;
-  //   }
-  //   return totalSteps;
-  // }
 
   Future<int> fetchTotalSteps() async {
-    // Get the current date
-    var today = DateTime.now();
-
-    // Calculate the start and end time for today
-    var startTime = DateTime(today.year, today.month, today.day);
-    var endTime = startTime.add(Duration(days: 1));
-
-    // Fetch records for today
+    var startTime = DateTime.now().subtract(const Duration(days: 4));
+    var endTime = DateTime.now();
     final requests = <Future>[];
-      Map<String, dynamic> typePoints = {};
-      for (var type in types) {
-        requests.add(HealthConnectFactory.getRecord(
-          type: type,
-          startTime: startTime,
-          endTime: endTime,
-        ).then((value) => typePoints.addAll({type.name: value})));
-      }
-      await Future.wait(requests);var stepList = typePoints['Steps']['records'];
-      var totalSteps = 0;
-      for(var step in stepList){
-        totalSteps+=step['count'] as int;
-      }
-      return totalSteps;
+    Map<String, dynamic> typePoints = {};
+    for (var type in types) {
+      requests.add(HealthConnectFactory.getRecord(
+        type: type,
+        startTime: startTime,
+        endTime: endTime,
+      ).then((value) => typePoints.addAll({type.name: value})));
+    }
+    await Future.wait(requests);var stepList = typePoints['Steps']['records'];
+    var totalSteps = 0;
+    for(var step in stepList){
+      totalSteps+=step['count'] as int;
+    }
+    return totalSteps;
   }
-
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -301,8 +269,6 @@ class Home_Fragment extends State<HomeFragment> {
 
 
 class ConcentricCirclesWithImage extends StatelessWidget {
-
-
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -320,20 +286,15 @@ class ConcentricCirclesWithImage extends StatelessWidget {
   }
 }
 class ConcentricCircles extends StatelessWidget {
-
-
-
   @override
   Widget build(BuildContext context) {
-    // double per = 0.8;
-
     return Container(
       child: Transform.rotate(
         angle: math.pi,
         child: CircularPercentIndicator(
           radius: 160, // Adjust the radius as needed
           lineWidth: 20,
-          percent: 0.8,
+          percent: 0.4,
           backgroundColor: Colors.white, // Set background color to white
           circularStrokeCap: CircularStrokeCap.round,
           progressColor: Colors.blue,
@@ -347,7 +308,7 @@ class ConcentricCircles extends StatelessWidget {
             center: CircularPercentIndicator(
               radius: 80, // Adjust the radius as needed
               lineWidth: 20,
-              percent: 0.3,
+              percent: 0.2,
               backgroundColor: Colors.white, // Set background color to white
               circularStrokeCap: CircularStrokeCap.round,
               progressColor: Colors.red,
