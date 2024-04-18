@@ -27,7 +27,13 @@ class Home_Fragment extends State<HomeFragment> {
 
 
   Future<int> fetchTotalSteps() async {
-    var startTime = DateTime.now().subtract(const Duration(days: 4));
+    var startTime = DateTime.now().subtract(Duration(
+      hours: DateTime.now().hour,
+      minutes: DateTime.now().minute,
+      seconds: DateTime.now().second,
+      milliseconds: DateTime.now().millisecond,
+      microseconds: DateTime.now().microsecond,
+    ));
     var endTime = DateTime.now();
     final requests = <Future>[];
     Map<String, dynamic> typePoints = {};

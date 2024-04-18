@@ -24,8 +24,8 @@ class _MainActivityState extends State<MainActivity> {
 
   static  final List<Widget> _widgetOptions = <Widget>[
     HomeFragment(),
-    Group_Fragment(),
-    // Container(color: Colors.green,),
+    ContactPage(),
+
     ActivityPage(),
     Container(color: Colors.red,),
     Profile_Fragment(namey: globals.userName),
