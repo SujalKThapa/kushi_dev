@@ -8,6 +8,8 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'dart:math' as math;
 import 'package:flutter_health_connect/flutter_health_connect.dart';
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:developer' as dev;
 
 class HomeFragment extends StatefulWidget{
   const HomeFragment({super.key});
@@ -18,9 +20,10 @@ class HomeFragment extends StatefulWidget{
 
 
 class Home_Fragment extends State<HomeFragment> {
-
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   List<HealthConnectDataType> types = [
-    HealthConnectDataType.Steps
+    HealthConnectDataType.Steps,
+    HealthConnectDataType.TotalCaloriesBurned
   ];
   bool readOnly = false;
   String resultText = '';
@@ -49,7 +52,47 @@ class Home_Fragment extends State<HomeFragment> {
     for(var step in stepList){
       timeTotal += (step['endTime']['epochSecond'] - step['startTime']['epochSecond']) as int;
     }
+    int weekday = DateTime.now().weekday;
+    await _firestore.collection("users").doc(globals.uid).collection("data").doc(weekday.toString()).set({
+      'totalTime': timeTotal,
+    }, SetOptions(merge: true));
     return timeTotal;
+  }
+  Future<int> fetchTotalCalories() async {
+    var startTime = DateTime.now().subtract(Duration(
+      hours: DateTime.now().hour,
+      minutes: DateTime.now().minute,
+      seconds: DateTime.now().second,
+      milliseconds: DateTime.now().millisecond,
+      microseconds: DateTime.now().microsecond,
+    ));
+    var endTime = DateTime.now();
+    final requests = <Future>[];
+    Map<String, dynamic> typePoints = {};
+    for (var type in types) {
+      requests.add(HealthConnectFactory.getRecord(
+        type: type,
+        startTime: startTime,
+        endTime: endTime,
+      ).then((value) => typePoints.addAll({type.name: value})));
+    }
+    await Future.wait(requests);
+    dev.log(typePoints.toString());
+    typePoints = typePoints['TotalCaloriesBurned'];
+    var totalEnergy = 0.0;
+    dev.log(totalEnergy.toString());
+    var counter = 0;
+    for (var record in typePoints.values){
+      if(counter == 1){
+        break;
+      }
+      for(var energy in record){
+        totalEnergy += energy['energy']['kilocalories'].toInt();
+      }
+      counter++;
+    }
+    dev.log(totalEnergy.toString());
+    return totalEnergy.toInt();
   }
 
   Future<int> fetchTotalSteps() async {
@@ -80,6 +123,11 @@ class Home_Fragment extends State<HomeFragment> {
       //developer.log((step['endTime']['epochSecond'] - step['startTime']['epochSecond']).toString());
       timeTotal += (step['endTime']['epochSecond'] - step['startTime']['epochSecond']) as int;
     }
+    int weekday = DateTime.now().weekday;
+    await _firestore.collection("users").doc(globals.uid).collection("data").doc(weekday.toString()).set({
+      'totalSteps': totalSteps,
+      'totalCalories': totalSteps
+    }, SetOptions(merge: true));
     // developer.log(timeTotal.toString());
     return totalSteps;
   }
@@ -115,7 +163,7 @@ class Home_Fragment extends State<HomeFragment> {
                     globals.userName,
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.primary,
-                      fontSize: 40.0,
+                      fontSize: 25.0,
                     ),
                   ),
                   SizedBox(
@@ -272,7 +320,7 @@ class Home_Fragment extends State<HomeFragment> {
                                         else if(min > 1) {
                                           return Text(
                                             '${min}min',
-                                            style: TextStyle(fontSize: 30,
+                                            style: TextStyle(fontSize: 18,
                                                 color: Colors.grey[600]),
                                           );
                                         }
