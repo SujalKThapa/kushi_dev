@@ -9,7 +9,7 @@ class ActivityPage extends StatefulWidget {
 }
 
 class _ActivityPageState extends State<ActivityPage> {
-  List<double> weekluSummary = [4.40, 2.50, 42.42, 30, 50, 96, 59];
+  List<double> weeklySummary = [4.40, 2.50, 42.42, 30, 50, 96, 59];
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class _ActivityPageState extends State<ActivityPage> {
       body: Center(
         child: SizedBox(
             height:200,
-            child: MyBarGraph(weeklySummary: weekluSummary,)
+            child: MyBarGraph(weeklySummary: weeklySummary,)
         ),
       ),
     );

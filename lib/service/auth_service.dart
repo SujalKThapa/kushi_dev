@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kushi_3/pages/mainactivity.dart';
+import 'package:kushi_3/model/globals.dart' as globals;
 
 class AuthService extends ChangeNotifier{
   // instance for auth
@@ -41,6 +42,8 @@ class AuthService extends ChangeNotifier{
             "imgUrl":userDetails.photoURL,
             "uid":userDetails.uid,
           };
+          globals.userName = userDetails.displayName;
+          globals.uid = userDetails.uid;
           _firestore.collection("users").doc(userDetails.uid).set(userInfo,SetOptions(merge: true)).then((value) => {
             Navigator.push(context, MaterialPageRoute(builder: (context)=> MainActivity(namey: userDetails.displayName,)))
           });
