@@ -1,8 +1,10 @@
-import 'package:kushi_3/service/auth_gate.dart';
+import 'package:kushi_3/service/auth/auth_gate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_health_connect/flutter_health_connect.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:developer' as developer;
+
+import '../../service/auth/auth_gate.dart';
 
 
 class stepTest extends StatefulWidget{
@@ -143,13 +145,13 @@ class stepTestState extends State<stepTest> {
             ElevatedButton(
               onPressed: () async {
                 var startTime = DateTime.now().subtract(Duration(
-                hours: DateTime.now().hour,
-                minutes: DateTime.now().minute,
-                seconds: DateTime.now().second,
-                milliseconds: DateTime.now().millisecond,
-                microseconds: DateTime.now().microsecond,
-              ));
-              var endTime = DateTime.now();
+                  hours: DateTime.now().hour,
+                  minutes: DateTime.now().minute,
+                  seconds: DateTime.now().second,
+                  milliseconds: DateTime.now().millisecond,
+                  microseconds: DateTime.now().microsecond,
+                ));
+                var endTime = DateTime.now();
                 try {
                   final requests = <Future>[];
                   Map<String, dynamic> typePoints = {};
@@ -189,7 +191,7 @@ class stepTestState extends State<stepTest> {
                 MaterialPageRoute(builder: (context) => AuthGate()),
               );
             },
-            child: const Text('Move to Main')),
+                child: const Text('Move to Main')),
             SizedBox(height: 50,),
             Text(resultText),
 

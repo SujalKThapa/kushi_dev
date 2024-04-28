@@ -1,9 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:kushi_3/components/mybutton.dart';
+import 'package:kushi_3/model/user_data.dart';
 import 'package:kushi_3/pages/selectGender.dart';
 import 'package:kushi_3/pages/signin.dart';
+import 'package:kushi_3/service/firestore_service.dart';
 import 'package:pinput/pinput.dart';
 
 class OTPVerificationPage extends StatefulWidget {
@@ -21,6 +24,8 @@ class OTPVerificationPage extends StatefulWidget {
 class _OTPVerificationPageState extends State<OTPVerificationPage> {
   late List<TextEditingController> _controllers;
   final FirebaseAuth auth = FirebaseAuth.instance;
+  final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+  final FirestoreService _firestoreService = FirestoreService();
 
   @override
   void initState() {
@@ -31,17 +36,27 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
   @override
   void dispose() {
     _controllers.forEach((controller) => controller.dispose());
+    userDataMap.clear();
     super.dispose();
   }
-
-  void _verifyOTP() async{
-    try{
-
-    }catch(ex){
-
+  Future<void> _checkUserExists(String uid) async {
+    try {
+      final DocumentSnapshot snapshot = await firebaseFirestore.collection('users').doc(uid).get();
+      if (snapshot.exists) {
+        print('User exists in Firestore');
+        // Navigate to main activity
+        Navigator.pushNamed(context, '/test_page');
+      } else {
+        print('User does not exist in Firestore');
+      }
+    } catch (e) {
+      print('Error checking user existence: $e');
     }
 
   }
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +102,10 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                             ),
                           ),
                           TextButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.pushNamed(context, '/phoneVerification');
+
+                              },
                               child: Text(
                                 "Change",
                                 style: TextStyle(
@@ -110,15 +128,22 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
               showCursor:true,
               onChanged: (value){
                   code = value;
+
               },
 
             ),
             SizedBox(height: 20.0),
             MyButton(text: "Verify OTP", onTap: ()async{
+                // userDataMap['phoneNumber']=data;
+
               try{
                 PhoneAuthCredential credential =  PhoneAuthProvider.credential(verificationId: SignIn.verify, smsCode: code);
-                await auth.signInWithCredential(credential);
-                Navigator.pushNamedAndRemoveUntil(context, '/test_page',(route) => false);
+               await auth.signInWithCredential(credential);
+               _firestoreService.updateUserField(_firestoreService.getCurrentUserId()!,'phoneNumber' ,data, context);
+               // _checkUserExists(_firestoreService.getCurrentUserId()!);
+
+
+                Navigator.pushNamedAndRemoveUntil(context, '/selectGender',(route) => false);
               }catch(e){
                   print("wrong otp");
               }
@@ -130,4 +155,5 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
       ),
     );
   }
+
 }

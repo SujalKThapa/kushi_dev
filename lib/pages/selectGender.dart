@@ -1,8 +1,10 @@
-// ignore: file_names
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kushi_3/components/mybutton.dart';
 import 'package:kushi_3/components/optionButton.dart';
-import 'package:kushi_3/pages/selectHeight.dart';
+import 'package:kushi_3/model/user_data.dart';
+import 'package:kushi_3/service/firestore_service.dart';
 
 
 class SelectGender extends StatefulWidget {
@@ -16,7 +18,10 @@ class SelectGender extends StatefulWidget {
 // ignore: camel_case_types
 class selectGenderState extends State<SelectGender> {
 
-  int selectedOptionIndex = -1; //-1 shows that no option is initially selected
+  int selectedOptionIndex = -1;
+  String gender = "";
+  FirestoreService _firestoreService = FirestoreService();
+  // -1 shows that no option is initially selected
 
   void selectOption(int index){
     setState(() {
@@ -48,33 +53,52 @@ class selectGenderState extends State<SelectGender> {
                 emojiText: "👩",
                 text: "Female",
                 isSelected: selectedOptionIndex == 0,
-                onTap: () => selectOption(0)
+                onTap: () {
+                  selectOption(0);
+                  userDataMap["gender"]="female";
+                }
               ),
               const SizedBox(height: 30,),
               OptionButton(
                   emojiText: "👨",
                   text: "Male",
                   isSelected: selectedOptionIndex == 1,
-                  onTap: () => selectOption(1)
+                  onTap: () {
+                    selectOption(1);
+                    userDataMap["gender"]="male";
+
+                  }
               ),
               const SizedBox(height: 30,),
               OptionButton(
                   emojiText: "🧓",
                   text: "Other",
                   isSelected: selectedOptionIndex == 2,
-                  onTap: () => selectOption(2)
+                  onTap: () {
+                    selectOption(2);
+                    userDataMap["gender"]="other";
+
+
+                  }
               ),
+
               const SizedBox(height: 120,),
               MyButton(text: "Continue", onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const SelectHeight()));
+                userDataMap['userId'] = _firestoreService.getCurrentUserId()!;
+                _firestoreService.updateUserDocument(_firestoreService.getCurrentUserId()!, userDataMap, context);
+
+               Navigator.pushNamed(context,'/selectHeight',arguments: userDataMap );
               },
              ),
             ],
           ),
         )
     );
+  }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    userDataMap.clear();
+    super.dispose();
   }
 }

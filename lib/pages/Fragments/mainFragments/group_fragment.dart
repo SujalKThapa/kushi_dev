@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -9,15 +10,31 @@ class ContactPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Contacts'),
+        backgroundColor: Theme.of(context).colorScheme.background,
       ),
-      body: ChangeNotifierProvider(
-        create: (_) => ContactProvider(),
-        builder: (context, _) => ContactList(),
+      body: Center(
+
+          child: Text("groups here")), // Move the ContactList widget outside the bottom modal sheet
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _showContactModal(context); // Show bottom modal sheet when FAB is pressed
+        },
+        child: Icon(Icons.sync),
       ),
     );
   }
-}
 
+  void _showContactModal(BuildContext context) {
+    showModalBottomSheet(
+      enableDrag: true,
+      scrollControlDisabledMaxHeightRatio: 0.89,
+      context: context,
+      builder: (BuildContext context) {
+        return ContactList(); // Display the ContactList widget within the bottom modal sheet
+      },
+    );
+  }
+}
 class ContactList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -42,52 +59,87 @@ class ContactList extends StatelessWidget {
             ),
           );
         } else {
-          return ListView.builder(
-            itemCount: provider.contacts!.length,
-            itemBuilder: (context, index) {
-              Contact contact = provider.contacts!.elementAt(index);
-              // Check if contact's number exists in Firestore (replace with your logic)
-              bool isContactInFirestore = false; // Replace with your logic
-              return ListTile(
-                title: Text(contact.displayName ?? ''),
-                subtitle: Text(contact.phones!.isNotEmpty
-                    ? contact.phones?.elementAt(0).value ?? ''
-                    : 'No phone number'),
-                trailing: !isContactInFirestore
-                    ? ElevatedButton(
-                  onPressed: () {
-                    // Handle invite action
-                    // Replace with your logic to handle invite action
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: Text("Invite"),
-                          content: Text(
-                              "Invite ${contact.displayName ?? 'this contact'}?"),
-                          actions: <Widget>[
-                            TextButton(
-                              onPressed: () => Navigator.pop(context),
-                              child: Text("Cancel"),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                // Send invitation
-                                // Replace with your logic to send invitation
-                                Navigator.pop(context);
-                              },
-                              child: Text("Invite"),
-                            ),
-                          ],
-                        );
-                      },
+          return Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  decoration: InputDecoration(
+                    labelText: 'Search',
+                    hintText: 'Search contacts...',
+                    prefixIcon: Icon(Icons.search),
+                    border: OutlineInputBorder(),
+                  ),
+                  onChanged: (query) {
+                    // Implement search functionality here
+                    List<Contact> filteredContacts = [];
+                    if (query.isNotEmpty) {
+                      filteredContacts = provider.contacts!.where((contact) {
+                        return contact.displayName!.toLowerCase().contains(query.toLowerCase());
+                      }).toList();
+                    } else {
+                      // If the query is empty, show all contacts
+                      filteredContacts = provider.contacts!.toList();
+                    }
+                    // Update the contacts shown based on the search result
+                    contactProvider.setContacts(filteredContacts);
+
+                  },
+                ),
+              ),
+              Expanded(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: provider.contacts!.length,
+                  itemBuilder: (context, index) {
+                    Contact contact = provider.contacts!.elementAt(index);
+                    // Check if contact's number exists in Firestore (replace with your logic)
+                    bool isContactInFirestore = false; // Replace with your logic
+                    String title = contact.displayName ?? 'No Name';
+                    String subtitle = contact.phones!.isNotEmpty
+                        ? contact.phones!.elementAt(0).value ?? 'No phone number'
+                        : 'No phone number';
+                    return ListTile(
+                      title: Text(title),
+                      subtitle: Text(subtitle),
+                      trailing: !isContactInFirestore
+                          ? ElevatedButton(
+                        onPressed: () {
+                          // Handle invite action
+                          // Replace with your logic to handle invite action
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text("Invite"),
+                                content: Text(
+                                    "Invite ${contact.displayName ?? 'this contact'}?"),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    child: Text("Cancel"),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      // Send invitation
+                                      // Replace with your logic to send invitation
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text("Invite"),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        child: Text('Invite'),
+                      )
+                          : null,
                     );
                   },
-                  child: Text('Invite'),
-                )
-                    : null,
-              );
-            },
+                ),
+              ),
+            ],
           );
         }
       },
@@ -125,7 +177,6 @@ class ContactList extends StatelessWidget {
     contactProvider.setContacts(contacts);
   }
 }
-
 class ContactProvider extends ChangeNotifier {
   Iterable<Contact>? _contacts;
 
@@ -137,8 +188,3 @@ class ContactProvider extends ChangeNotifier {
   }
 }
 
-void main() {
-  runApp(MaterialApp(
-    home: ContactPage(),
-  ));
-}

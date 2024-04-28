@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:kushi_3/pages/signin.dart';
 import 'package:kushi_3/pages/signup.dart';
+
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class IntroSlider extends StatefulWidget {

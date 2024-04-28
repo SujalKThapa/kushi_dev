@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kushi_3/pages/mainactivity.dart';
 import 'package:kushi_3/model/globals.dart' as globals;
-import 'package:kushi_3/pages/signin.dart';
-import 'package:kushi_3/pages/signup.dart';
 
-import '../pages/introslider.dart';
+
+import '../../pages/introslider.dart';
 
 
 

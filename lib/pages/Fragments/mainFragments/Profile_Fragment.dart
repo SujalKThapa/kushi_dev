@@ -8,7 +8,7 @@ import 'package:kushi_3/pages/introslider.dart';
 import 'package:kushi_3/pages/notifications.dart';
 import 'package:kushi_3/model/globals.dart' as globals;
 import 'package:kushi_3/components/settingButtons.dart';
-import 'package:kushi_3/service/auth_service.dart';
+import 'package:kushi_3/service/auth/auth_service.dart';
 import 'package:line_icons/line_icon.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:provider/provider.dart';
@@ -39,11 +39,11 @@ class _profilePageState extends State<Profile_Fragment> {
       DocumentSnapshot<Map<String, dynamic>> userSnapshot = await FirebaseFirestore.instance
           .collection('users')
           .doc(FirebaseAuth.instance.currentUser!.uid)
-          .get();
+          .get(GetOptions(source: Source.cache));
 
       // Retrieve profile image URL from the user document
       setState(() {
-        profileImageUrl = userSnapshot.data()?['imgUrl'];
+        profileImageUrl = userSnapshot.data()?['profileUrl'];
       });
     } catch (e) {
       print('Error fetching profile image URL: $e');

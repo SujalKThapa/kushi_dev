@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,13 +7,18 @@ import 'package:flutter/services.dart';
 import 'package:kushi_3/components/mybutton.dart';
 import 'package:kushi_3/components/sign_in_with.dart';
 import 'package:kushi_3/components/textfield.dart';
+import 'package:kushi_3/model/user_data.dart';
 import 'package:kushi_3/pages/mainactivity.dart';
 import 'package:kushi_3/pages/otp.dart';
 import 'package:kushi_3/pages/selectGender.dart';
 import 'package:kushi_3/pages/signup.dart';
-import 'package:kushi_3/service/auth_service.dart';
+import 'package:kushi_3/service/auth/auth_service.dart';
+import 'package:kushi_3/service/firestore_service.dart';
+import 'package:line_icons/line_icon.dart';
 import 'package:provider/provider.dart';
 import 'package:kushi_3/model/globals.dart' as globals;
+import 'dart:developer' as developer;
+
 
 
 class SignIn extends StatefulWidget {
@@ -20,12 +26,16 @@ class SignIn extends StatefulWidget {
   SignIn({super.key});
 
   static String verify = "";
+  static String phone = "";
+  static bool isSignInUsingPhoneAuth = true;
 
   @override
   State<SignIn> createState() => _SignInState();
 }
 
 class _SignInState extends State<SignIn> {
+  FirebaseAuth auth = FirebaseAuth.instance;
+ FirestoreService _firestoreService = FirestoreService();
 
   final TextEditingController countryCode = TextEditingController();
   final TextEditingController phoneNumber = TextEditingController();
@@ -41,6 +51,20 @@ class _SignInState extends State<SignIn> {
       displayNameNoCountryCode: "IN",
       e164Key: ""
   );
+
+  Future<void> storeUserData(String uid, String phoneNumber) async {
+    try {
+      await FirebaseFirestore.instance.collection('user').doc(uid).set({
+        'phoneNumber': phoneNumber,
+
+        // Add other user data as needed
+      });
+      developer.log('User data stored successfully');
+    } catch (e) {
+      developer.log('Error storing user data: $e');
+    }
+  }
+
 
 
   @override
@@ -140,12 +164,21 @@ class _SignInState extends State<SignIn> {
 
               SizedBox(height: 50,),
               MyButton(text: "Send the code", onTap: () async {
+
+                userDataMap["phoneNumber"] = '${countryCode.text} ${phoneNumber.text}';
+
                 await FirebaseAuth.instance.verifyPhoneNumber(
                   phoneNumber: '${countryCode.text} ${phoneNumber.text}',
-                  verificationCompleted: (PhoneAuthCredential credential) {},
+                  verificationCompleted: (PhoneAuthCredential credential) {
+
+
+                  },
                   verificationFailed: (FirebaseAuthException e) {},
                   codeSent: (String verificationId, int? resendToken) {
+
+                    SignIn.phone = '${countryCode.text} ${phoneNumber.text}';
                     SignIn.verify = verificationId;
+                    // SignIn.phone = "$countryCode $phoneNumber";
                     Navigator.pushNamed(
                         context,
                         '/OTPPage',
@@ -165,21 +198,7 @@ class _SignInState extends State<SignIn> {
                 fontWeight: FontWeight.w700,
                 fontSize: 25,
               ),),
-              Row(
 
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  GestureDetector(
-                    onTap: () => AuthService().signInWithGoogle(context),
-                    child: SquareTile(imagePath: 'assets/icons/google.png'),
-                  ),
-                  // SquareTile(imagePath: 'assets/icons/google.png',),
-                  SizedBox(width: 10,),
-                  SquareTile(imagePath: 'assets/icons/apple.png',)
-
-
-                ],
-              ),
 
 
             ],

@@ -3,6 +3,7 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:kushi_3/pages/Fragments/mainFragments/group_fragment.dart';
 import 'package:kushi_3/pages/Fragments/mainFragments/home_fragment.dart';
 import 'package:kushi_3/pages/Fragments/mainFragments/screen_1.dart';
+// import 'package:kushi_3/pages/invite_page.dart';
 import 'package:kushi_3/pages/notifications.dart';
 import 'package:kushi_3/pages/profilePage.dart';
 import 'package:kushi_3/model/globals.dart' as globals;

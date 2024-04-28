@@ -5,7 +5,7 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:kushi_3/pages/notifications.dart';
 import 'package:kushi_3/model/globals.dart' as globals;
 import 'package:kushi_3/components/settingButtons.dart';
-import 'package:kushi_3/service/auth_service.dart';
+import 'package:kushi_3/service/auth/auth_service.dart';
 import 'package:provider/provider.dart';
 
 
