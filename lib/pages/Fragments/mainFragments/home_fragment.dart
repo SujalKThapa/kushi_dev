@@ -210,155 +210,155 @@ class Home_Fragment extends State<HomeFragment> {
                 ],
               ),
               SizedBox(height: 25,),
-              // Row(
-              //   children: [
-              //     Expanded(
-              //       child: Row(
-              //         children: [
-              //           SizedBox(width: 20), // Add some space between the text and the box
-              //           Container(
-              //             // margin: EdgeInsets.only(left: 50),
-              //             width: 45, // Adjust width as needed
-              //             height: 45, // Adjust height as needed
-              //             decoration: BoxDecoration(
-              //               color: Color(0x4C85DE2B), // Set the color to F75858 with 30% opacity
-              //               borderRadius: BorderRadius.circular(10), // Adjust border radius as needed
-              //             ),
-              //             child: Center(
-              //               child:LineIcon(LineIcons.clock,color: Colors.black,size: 30,) ,
-              //             ),
-              //           ),
-              //           SizedBox(width: 10), // Add some space between the box and the text
-              //           Expanded(
-              //             child: Column(
-              //               crossAxisAlignment: CrossAxisAlignment.start,
-              //               children: [
-              //                 Padding(
-              //                   padding: const EdgeInsets.only(left :8.0),
-              //                   child: Text(
-              //                     'Time',
-              //                     style: TextStyle(fontSize: 19, color: Colors.black, fontWeight: FontWeight.bold),
-              //                   ),
-              //                 ),
-              //                 SizedBox(height: 0), // Add some space between the text and the box
-              //                 Padding(
-              //                   padding: const EdgeInsets.only(left: .0),
-              //                   child: FutureBuilder<int>(
-              //                       future: fetchTotalTime(),
-              //                       builder: (context, snapshot) {
-              //                         if(snapshot.connectionState == ConnectionState.waiting){
-              //                           return Text(
-              //                             'Waiting',
-              //                             style: TextStyle(fontSize: 30, color: Colors.grey[600]),
-              //                           );
-              //                         }
-              //                         else if(snapshot.hasError){
-              //                           // developer.log(snapshot.error.toString());
-              //                           return Text(
-              //                             'Error',
-              //                             style: TextStyle(fontSize: 30, color: Colors.grey[600]),
-              //                           );
-              //                         }
-              //                         else{
-              //                           int hours = snapshot.data! ~/ 3600;
-              //                           int min = snapshot.data! % 60;
-              //                           if(hours > 1) {
-              //                             return Text(
-              //                               '${hours}hr${min}min',
-              //                               style: TextStyle(fontSize: 18,
-              //                                   color: Colors.grey[600]),
-              //                             );
-              //                           }
-              //                           else if(min > 1) {
-              //                             return Text(
-              //                               '${min}min',
-              //                               style: TextStyle(fontSize: 30,
-              //                                   color: Colors.grey[600]),
-              //                             );
-              //                           }
-              //                           else{
-              //                             return Text(
-              //                               'No Excercise',
-              //                               style: TextStyle(fontSize: 30,
-              //                                   color: Colors.grey[600]),
-              //                             );
-              //                           }
-              //                         }
-              //                       }
-              //                   ),
-              //                 ),
-              //               ],
-              //             ),
-              //           ),
-              //         ],
-              //       ),
-              //     ),
-              //     SizedBox(width: 20), // Add some space between the two rows
-              //     Expanded(
-              //       child: Row(
-              //         children: [
-              //           SizedBox(width: 20), // Add some space between the text and the box
-              //           Container(
-              //             // margin: EdgeInsets.only(left: 50),
-              //             width: 45, // Adjust width as needed
-              //             height: 45, // Adjust height as needed
-              //             decoration: BoxDecoration(
-              //               color: Color(0x4C2BAEF7), // Set the color to F75858 with 30% opacity
-              //               borderRadius: BorderRadius.circular(10), // Adjust border radius as needed
-              //             ),
-              //             child: Center(
-              //               child: Image.asset(
-              //                 "assets/icons/calorie.png",
-              //                 height:30 ,
-              //                 width: 30,
-              //               )
-              //             ),
-              //           ),
-              //           SizedBox(width: 10), // Add some space between the box and the text
-              //           Expanded(
-              //             child: Column(
-              //               crossAxisAlignment: CrossAxisAlignment.start,
-              //               children: [
-              //                 Text(
-              //                   'Calories',
-              //                   style: TextStyle(fontSize: 19, color: Colors.black, fontWeight: FontWeight.bold),
-              //                 ),
-              //                 SizedBox(height: 0), // Add some space between the text and the box
-              //                 Padding(
-              //                   padding: const EdgeInsets.only(left: 5.0),
-              //                   child: FutureBuilder<int>(
-              //                       future: fetchTotalSteps(),
-              //                       builder: (context, snapshot) {
-              //                         if(snapshot.connectionState == ConnectionState.waiting){
-              //                           return Text(
-              //                             'Waiting',
-              //                             style: TextStyle(fontSize: 30, color: Colors.grey[600]),
-              //                           );
-              //                         }
-              //                         else if(snapshot.hasError){
-              //                           return Text(
-              //                             'Error',
-              //                             style: TextStyle(fontSize: 30, color: Colors.grey[600]),
-              //                           );
-              //                         }
-              //                         else{
-              //                           return Text(
-              //                             '${snapshot.data}',
-              //                             style: TextStyle(fontSize: 18, color: Colors.grey[600]),
-              //                           );
-              //                         }
-              //                       }
-              //
-              //                   ),
-              //                 ),
-              //               ],
-              //             ),
-              //           ),
-              //         ],
-              //       ),
-              //     ),
-              //   ],
-              // ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Row(
+                      children: [
+                        SizedBox(width: 20), // Add some space between the text and the box
+                        Container(
+                          // margin: EdgeInsets.only(left: 50),
+                          width: 45, // Adjust width as needed
+                          height: 45, // Adjust height as needed
+                          decoration: BoxDecoration(
+                            color: Color(0x4C85DE2B), // Set the color to F75858 with 30% opacity
+                            borderRadius: BorderRadius.circular(10), // Adjust border radius as needed
+                          ),
+                          child: Center(
+                            child:LineIcon(LineIcons.clock,color: Colors.black,size: 30,) ,
+                          ),
+                        ),
+                        SizedBox(width: 10), // Add some space between the box and the text
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left :8.0),
+                                child: Text(
+                                  'Time',
+                                  style: TextStyle(fontSize: 19, color: Colors.black, fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              SizedBox(height: 0), // Add some space between the text and the box
+                              Padding(
+                                padding: const EdgeInsets.only(left: .0),
+                                child: FutureBuilder<int>(
+                                    future: fetchTotalTime(),
+                                    builder: (context, snapshot) {
+                                      if(snapshot.connectionState == ConnectionState.waiting){
+                                        return Text(
+                                          'Waiting',
+                                          style: TextStyle(fontSize: 30, color: Colors.grey[600]),
+                                        );
+                                      }
+                                      else if(snapshot.hasError){
+                                        // developer.log(snapshot.error.toString());
+                                        return Text(
+                                          'Error',
+                                          style: TextStyle(fontSize: 30, color: Colors.grey[600]),
+                                        );
+                                      }
+                                      else{
+                                        int hours = snapshot.data! ~/ 3600;
+                                        int min = snapshot.data! % 60;
+                                        if(hours > 1) {
+                                          return Text(
+                                            '${hours}hr${min}min',
+                                            style: TextStyle(fontSize: 18,
+                                                color: Colors.grey[600]),
+                                          );
+                                        }
+                                        else if(min > 1) {
+                                          return Text(
+                                            '${min}min',
+                                            style: TextStyle(fontSize: 30,
+                                                color: Colors.grey[600]),
+                                          );
+                                        }
+                                        else{
+                                          return Text(
+                                            'No Excercise',
+                                            style: TextStyle(fontSize: 30,
+                                                color: Colors.grey[600]),
+                                          );
+                                        }
+                                      }
+                                    }
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(width: 20), // Add some space between the two rows
+                  Expanded(
+                    child: Row(
+                      children: [
+                        SizedBox(width: 20), // Add some space between the text and the box
+                        Container(
+                          // margin: EdgeInsets.only(left: 50),
+                          width: 45, // Adjust width as needed
+                          height: 45, // Adjust height as needed
+                          decoration: BoxDecoration(
+                            color: Color(0x4C2BAEF7), // Set the color to F75858 with 30% opacity
+                            borderRadius: BorderRadius.circular(10), // Adjust border radius as needed
+                          ),
+                          child: Center(
+                            child: Image.asset(
+                              "assets/icons/calorie.png",
+                              height:30 ,
+                              width: 30,
+                            )
+                          ),
+                        ),
+                        SizedBox(width: 10), // Add some space between the box and the text
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Calories',
+                                style: TextStyle(fontSize: 19, color: Colors.black, fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(height: 0), // Add some space between the text and the box
+                              Padding(
+                                padding: const EdgeInsets.only(left: 5.0),
+                                child: FutureBuilder<int>(
+                                    future: fetchTotalSteps(),
+                                    builder: (context, snapshot) {
+                                      if(snapshot.connectionState == ConnectionState.waiting){
+                                        return Text(
+                                          'Waiting',
+                                          style: TextStyle(fontSize: 30, color: Colors.grey[600]),
+                                        );
+                                      }
+                                      else if(snapshot.hasError){
+                                        return Text(
+                                          'Error',
+                                          style: TextStyle(fontSize: 30, color: Colors.grey[600]),
+                                        );
+                                      }
+                                      else{
+                                        return Text(
+                                          '${snapshot.data}',
+                                          style: TextStyle(fontSize: 18, color: Colors.grey[600]),
+                                        );
+                                      }
+                                    }
+
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
 
 
 
