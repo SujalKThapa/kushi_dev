@@ -14,15 +14,15 @@ import 'package:line_icons/line_icons.dart';
 import 'package:provider/provider.dart';
 
 
-class Profile_Fragment extends StatefulWidget {
+class ProfileFragment extends StatefulWidget {
   String namey;
-  Profile_Fragment({required this.namey, super.key});
+  ProfileFragment({required this.namey, super.key});
 
   @override
-  State<Profile_Fragment> createState() => _profilePageState();
+  State<ProfileFragment> createState() => _profilePageState();
 }
 
-class _profilePageState extends State<Profile_Fragment> {
+class _profilePageState extends State<ProfileFragment> {
   late String name;
   String? profileImageUrl;
 
@@ -43,7 +43,7 @@ class _profilePageState extends State<Profile_Fragment> {
 
       // Retrieve profile image URL from the user document
       setState(() {
-        profileImageUrl = userSnapshot.data()?['profileUrl'];
+       profileImageUrl = userSnapshot.data()?['profileUrl'];
       });
     } catch (e) {
       print('Error fetching profile image URL: $e');
@@ -53,6 +53,7 @@ class _profilePageState extends State<Profile_Fragment> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
             mainAxisAlignment: MainAxisAlignment.start,

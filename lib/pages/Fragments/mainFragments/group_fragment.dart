@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:contacts_service/contacts_service.dart';
 
-class ContactPage extends StatelessWidget {
+class GroupFragment extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kushi_3/components/mybutton.dart';
 import 'package:kushi_3/components/optionButton.dart';
+import 'package:kushi_3/components/show_alert_box.dart';
 import 'package:kushi_3/model/user_data.dart';
 import 'package:kushi_3/service/firestore_service.dart';
 
@@ -85,9 +86,15 @@ class selectGenderState extends State<SelectGender> {
               const SizedBox(height: 120,),
               MyButton(text: "Continue", onTap: () {
                 userDataMap['userId'] = _firestoreService.getCurrentUserId()!;
-                _firestoreService.updateUserDocument(_firestoreService.getCurrentUserId()!, userDataMap, context);
+                try{
+                  _firestoreService.updateUserDocument(_firestoreService.getCurrentUserId()!, userDataMap, context).then((value)=>Navigator.pushNamed(context,'/selectHeight',arguments: userDataMap ));
 
-               Navigator.pushNamed(context,'/selectHeight',arguments: userDataMap );
+                }catch(e){
+                  ShowAlertBox(text:e.toString());
+                }
+
+
+
               },
              ),
             ],

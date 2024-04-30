@@ -76,7 +76,7 @@ class MyApp extends StatelessWidget {
           '/contactList':(context) => ContactList(),
         },
 
-      home:  AuthGate(),
+      home:  MainActivity(namey: "suhas",),
     );
   }
 }

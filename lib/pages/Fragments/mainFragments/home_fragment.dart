@@ -1,424 +1,296 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:kushi_3/model/globals.dart' as globals;
-import 'package:line_icons/line_icon.dart';
-import 'package:line_icons/line_icons.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'dart:math' as math;
-import 'package:flutter_health_connect/flutter_health_connect.dart';
-import 'dart:async';
+import 'package:kushi_3/components/bar_graph/single_bar_graph.dart';
 
-class HomeFragment extends StatefulWidget{
+class HomeFragment extends StatefulWidget {
   const HomeFragment({super.key});
 
   @override
-  State<HomeFragment> createState() => Home_Fragment();
+  State<HomeFragment> createState() => _HomeFragmentState();
 }
 
-
-class Home_Fragment extends State<HomeFragment> {
-
-  List<HealthConnectDataType> types = [
-    HealthConnectDataType.Steps
-  ];
-  bool readOnly = false;
-  String resultText = '';
-
-  Future<int> fetchTotalTime() async {
-    var startTime = DateTime.now().subtract(Duration(
-      hours: DateTime.now().hour,
-      minutes: DateTime.now().minute,
-      seconds: DateTime.now().second,
-      milliseconds: DateTime.now().millisecond,
-      microseconds: DateTime.now().microsecond,
-    ));
-    var endTime = DateTime.now();
-    final requests = <Future>[];
-    Map<String, dynamic> typePoints = {};
-    for (var type in types) {
-      requests.add(HealthConnectFactory.getRecord(
-        type: type,
-        startTime: startTime,
-        endTime: endTime,
-      ).then((value) => typePoints.addAll({type.name: value})));
-    }
-    await Future.wait(requests);
-    var stepList = typePoints['Steps']['records'];
-    var timeTotal = 0;
-    for(var step in stepList){
-      timeTotal += (step['endTime']['epochSecond'] - step['startTime']['epochSecond']) as int;
-    }
-    return timeTotal;
-  }
-
-  Future<int> fetchTotalSteps() async {
-    var startTime = DateTime.now().subtract(Duration(
-      hours: DateTime.now().hour,
-      minutes: DateTime.now().minute,
-      seconds: DateTime.now().second,
-      milliseconds: DateTime.now().millisecond,
-      microseconds: DateTime.now().microsecond,
-    ));
-    var endTime = DateTime.now();
-    final requests = <Future>[];
-    Map<String, dynamic> typePoints = {};
-    for (var type in types) {
-      requests.add(HealthConnectFactory.getRecord(
-        type: type,
-        startTime: startTime,
-        endTime: endTime,
-      ).then((value) => typePoints.addAll({type.name: value})));
-    }
-    await Future.wait(requests);
-    var stepList = typePoints['Steps']['records'];
-    var timeTotal = 0;
-    //developer.log(typePoints.toString());
-    var totalSteps = 0;
-    for(var step in stepList){
-      totalSteps+=step['count'] as int;
-      //developer.log((step['endTime']['epochSecond'] - step['startTime']['epochSecond']).toString());
-      timeTotal += (step['endTime']['epochSecond'] - step['startTime']['epochSecond']) as int;
-    }
-    // developer.log(timeTotal.toString());
-    return totalSteps;
-  }
+class _HomeFragmentState extends State<HomeFragment> {
+  final int _steps = 300;
+  final int _stepPer = 30;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        margin: EdgeInsets.only(top: 10),
-        padding: EdgeInsets.all(20.0),
-        color: Theme.of(context).colorScheme.background,
-        child: Container(
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  Text(
-                    'Hello ',
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
-                      fontSize: 50.0,
-                      fontWeight: FontWeight.bold,
-                      shadows: [
-                        Shadow(
-                          blurRadius: 2.0,
-                          color: Theme.of(context).colorScheme.primary,
-                          offset: Offset(2.0, 2.0),
-                        )
-                      ],
-                    ),
-                  ),
-                  Text(
-                    globals.userName,
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
-                      fontSize: 40.0,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 70,
-                  ),
-                  GestureDetector(
-                    child: Icon(
-                      Icons.notifications,
-                      size: 35,
-                    ),
-                    onTap: () {
-
-                    },
-                  ),
-
-                ],
+      backgroundColor: Colors.white,
+      body: SingleChildScrollView(
+        // Wrap your Column with SingleChildScrollView
+        child: Column(
+          children: [
+            Container(
+              margin: const EdgeInsets.only(
+                  left: 25, right: 25, top: 25, bottom: 10),
+              height: 200,
+              width: 360,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: const Color.fromRGBO(232, 232, 232, 1),
               ),
-              SizedBox(height:20,),
-
-              // CircleStatus(),
-              ConcentricCirclesWithImage(),
-              SizedBox(height: 20,),
-
-              Row(
+              child: const Row(
                 children: [
-
-                  SizedBox(width: 20), // Add some space between the text and the box
-                  Container(
-                    margin: EdgeInsets.only(left: 70),
-                    width: 60, // Adjust width as needed
-                    height: 60, // Adjust height as needed
-                    decoration: BoxDecoration(
-                      color: Color(0x4CF75858), // Set the color to F75858 with 30% opacity
-                      borderRadius: BorderRadius.circular(10), // Adjust border radius as needed
-                    ),
-                    child: Center(
-                      child: Icon(Icons.directions_walk_rounded,size: 50,
-                      color: Color(0xFFF75858),)
-                    ),
-                  ),
-                  SizedBox(width: 10), // Add some space between the box and the text
-                  Expanded(
+                  Padding(
+                    padding: EdgeInsets.only(left: 10.0),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Total Steps',
-                          style: TextStyle(
-                              fontSize: 24,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold
-
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Daily",
+                            style: TextStyle(
+                              fontSize: 40,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
-                        ),
-                        SizedBox(height: 0), // Add some space between the text and the box
-                        Padding(
-                          padding: const EdgeInsets.only(left: 25.0),
-                          child: FutureBuilder<int>(
-
-
-                              future: fetchTotalSteps(),
-                              builder: (context, snapshot) {
-                                if(snapshot.connectionState == ConnectionState.waiting){
-                                  return Text(
-                                    'Waiting',
-                                    style: TextStyle(fontSize: 30, color: Colors.grey[600]),
-                                  );
-                                }
-                                else if(snapshot.hasError){
-                                  // developer.log(snapshot.error.toString());
-                                  return Text(
-                                    'Error',
-                                    style: TextStyle(fontSize: 30, color: Colors.grey[600]),
-                                  );
-                                }
-                                else{
-                                  return Text(
-                                    '${snapshot.data}',
-                                    style: TextStyle(fontSize: 20, color: Colors.grey[600]),
-                                  );
-                                }
-
-                              }
-
-
-
-                          ),
-                        ),
-                      ],
-                    ),
+                          Text(
+                            "challenge",
+                            style: TextStyle(
+                              fontSize: 40,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          )
+                        ]),
                   ),
                 ],
               ),
-              SizedBox(height: 25,),
-              Row(
-                children: [
-                  Expanded(
-                    child: Row(
-                      children: [
-                        SizedBox(width: 20), // Add some space between the text and the box
-                        Container(
-                          // margin: EdgeInsets.only(left: 50),
-                          width: 45, // Adjust width as needed
-                          height: 45, // Adjust height as needed
-                          decoration: BoxDecoration(
-                            color: Color(0x4C85DE2B), // Set the color to F75858 with 30% opacity
-                            borderRadius: BorderRadius.circular(10), // Adjust border radius as needed
-                          ),
-                          child: Center(
-                            child:LineIcon(LineIcons.clock,color: Colors.black,size: 30,) ,
-                          ),
-                        ),
-                        SizedBox(width: 10), // Add some space between the box and the text
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(left :8.0),
-                                child: Text(
-                                  'Time',
-                                  style: TextStyle(fontSize: 19, color: Colors.black, fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                              SizedBox(height: 0), // Add some space between the text and the box
-                              Padding(
-                                padding: const EdgeInsets.only(left: .0),
-                                child: FutureBuilder<int>(
-                                    future: fetchTotalTime(),
-                                    builder: (context, snapshot) {
-                                      if(snapshot.connectionState == ConnectionState.waiting){
-                                        return Text(
-                                          'Waiting',
-                                          style: TextStyle(fontSize: 30, color: Colors.grey[600]),
-                                        );
-                                      }
-                                      else if(snapshot.hasError){
-                                        // developer.log(snapshot.error.toString());
-                                        return Text(
-                                          'Error',
-                                          style: TextStyle(fontSize: 30, color: Colors.grey[600]),
-                                        );
-                                      }
-                                      else{
-                                        int hours = snapshot.data! ~/ 3600;
-                                        int min = snapshot.data! % 60;
-                                        if(hours > 1) {
-                                          return Text(
-                                            '${hours}hr${min}min',
-                                            style: TextStyle(fontSize: 18,
-                                                color: Colors.grey[600]),
-                                          );
-                                        }
-                                        else if(min > 1) {
-                                          return Text(
-                                            '${min}min',
-                                            style: TextStyle(fontSize: 30,
-                                                color: Colors.grey[600]),
-                                          );
-                                        }
-                                        else{
-                                          return Text(
-                                            'No Excercise',
-                                            style: TextStyle(fontSize: 30,
-                                                color: Colors.grey[600]),
-                                          );
-                                        }
-                                      }
-                                    }
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(width: 20), // Add some space between the two rows
-                  Expanded(
-                    child: Row(
-                      children: [
-                        SizedBox(width: 20), // Add some space between the text and the box
-                        Container(
-                          // margin: EdgeInsets.only(left: 50),
-                          width: 45, // Adjust width as needed
-                          height: 45, // Adjust height as needed
-                          decoration: BoxDecoration(
-                            color: Color(0x4C2BAEF7), // Set the color to F75858 with 30% opacity
-                            borderRadius: BorderRadius.circular(10), // Adjust border radius as needed
-                          ),
-                          child: Center(
-                            child: Image.asset(
-                              "assets/icons/calorie.png",
-                              height:30 ,
-                              width: 30,
-                            )
-                          ),
-                        ),
-                        SizedBox(width: 10), // Add some space between the box and the text
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Calories',
-                                style: TextStyle(fontSize: 19, color: Colors.black, fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(height: 0), // Add some space between the text and the box
-                              Padding(
-                                padding: const EdgeInsets.only(left: 5.0),
-                                child: FutureBuilder<int>(
-                                    future: fetchTotalSteps(),
-                                    builder: (context, snapshot) {
-                                      if(snapshot.connectionState == ConnectionState.waiting){
-                                        return Text(
-                                          'Waiting',
-                                          style: TextStyle(fontSize: 30, color: Colors.grey[600]),
-                                        );
-                                      }
-                                      else if(snapshot.hasError){
-                                        return Text(
-                                          'Error',
-                                          style: TextStyle(fontSize: 30, color: Colors.grey[600]),
-                                        );
-                                      }
-                                      else{
-                                        return Text(
-                                          '${snapshot.data}',
-                                          style: TextStyle(fontSize: 18, color: Colors.grey[600]),
-                                        );
-                                      }
-                                    }
-
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-
-
-
-            ],
-          ),
-        ),
-      ),
-    ) ;
-  }
-
-
-}
-
-
-class ConcentricCirclesWithImage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        ConcentricCircles(),
-        Image.asset(
-          "assets/icons/footsteps.png", // Replace 'your_image.png' with your image asset path
-
-          width: 60, // Adjust image size as needed
-          height: 64,
-        ),
-      ],
-    );
-  }
-}
-class ConcentricCircles extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Transform.rotate(
-        angle: math.pi,
-        child: CircularPercentIndicator(
-          radius: 160, // Adjust the radius as needed
-          lineWidth: 20,
-          percent: 0.4,
-          backgroundColor: Colors.white, // Set background color to white
-          circularStrokeCap: CircularStrokeCap.round,
-          progressColor: Colors.blue,
-          center: CircularPercentIndicator(
-            radius: 120, // Adjust the radius as needed
-            lineWidth: 20,
-            percent: 0.6,
-            backgroundColor: Colors.white, // Set background color to white
-            circularStrokeCap: CircularStrokeCap.round,
-            progressColor: Colors.green,
-            center: CircularPercentIndicator(
-              radius: 80, // Adjust the radius as needed
-              lineWidth: 20,
-              percent: 0.2,
-              backgroundColor: Colors.white, // Set background color to white
-              circularStrokeCap: CircularStrokeCap.round,
-              progressColor: Colors.red,
             ),
-          ),
+            Container(
+              margin: const EdgeInsets.only(left: 30, right: 30),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Text(
+                      '$_steps Steps',
+                      style: const TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 10),
+                    // padding:EdgeInsets.only(left: 10,right: 10) ,
+                    height: 10,
+                    // Adjust the height of the linear progress indicator container
+                    color: Colors.transparent,
+                    // Transparent color to overlay the linear progress indicator
+                    child: Center(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: LinearProgressIndicator(
+                          value: 0.5,
+                          // Set the progress value between 0.0 and 1.0
+                          minHeight: 10,
+                          // Set the height of the linear progress indicator
+                          backgroundColor: Colors.green[100],
+                          // Set the background color of the linear progress indicator
+                          valueColor: const AlwaysStoppedAnimation<Color>(Colors
+                              .green), // Set the color of the linear progress indicator
+                        ),
+                      ),
+                    ),
+                  ),
+                  Text(
+                    '$_stepPer%',
+                    style: const TextStyle(
+                      fontSize: 29,
+                      fontWeight: FontWeight.w700,
+                    ),
+                    textAlign: TextAlign.left,
+                  )
+                ],
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(left: 30, right: 30),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Text(
+                      '$_steps calories',
+                      style: const TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 10),
+                    // padding:EdgeInsets.only(left: 10,right: 10) ,
+                    height: 10,
+                    // Adjust the height of the linear progress indicator container
+                    color: Colors.transparent,
+                    // Transparent color to overlay the linear progress indicator
+                    child: Center(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: LinearProgressIndicator(
+                          value: 0.5,
+                          // Set the progress value between 0.0 and 1.0
+                          minHeight: 10,
+                          // Set the height of the linear progress indicator
+                          backgroundColor: Colors.blue[100],
+                          // Set the background color of the linear progress indicator
+                          valueColor: const AlwaysStoppedAnimation<Color>(Colors
+                              .blue), // Set the color of the linear progress indicator
+                        ),
+                      ),
+                    ),
+                  ),
+                  Text(
+                    '${_stepPer}%',
+                    style: const TextStyle(
+                      fontSize: 29,
+                      fontWeight: FontWeight.w700,
+                    ),
+                    textAlign: TextAlign.left,
+                  )
+                ],
+              ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Redeem',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                    color: Color.fromRGBO(59, 59, 59, 1),
+
+                  ),
+                  textAlign: TextAlign.left,
+                ),
+                Stack(
+                  children: [
+                    Container(
+                      height: 190,
+                      width: 360,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.green,
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      // Adjust this value to change the distance from the bottom
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        // alignment: Alignment.center,
+                        decoration: const BoxDecoration(
+                          color: Color.fromRGBO(232, 232, 232, 1),
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(20),
+                              bottomRight: Radius.circular(20)),
+                        ),
+                        child: Container(
+                          margin: EdgeInsets.only(left: 20),
+                          child: const Text(
+                            textAlign: TextAlign.left,
+                            'Sports accessories',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 20,),
+                Stack(
+                  children: [
+                    Container(
+                      height: 190,
+                      width: 360,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.green,
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      // Adjust this value to change the distance from the bottom
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        // alignment: Alignment.center,
+                        decoration: const BoxDecoration(
+                          color: Color.fromRGBO(232, 232, 232, 1),
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(20),
+                              bottomRight: Radius.circular(20)),
+                        ),
+                        child: Container(
+                          margin: EdgeInsets.only(left: 20),
+                          child: const Text(
+                            textAlign: TextAlign.left,
+                            'Sports accessories',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 20,),
+                Stack(
+                  children: [
+                    Container(
+                      height: 190,
+                      width: 360,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.green,
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      // Adjust this value to change the distance from the bottom
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        // alignment: Alignment.center,
+                        decoration: const BoxDecoration(
+                          color: Color.fromRGBO(232, 232, 232, 1),
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(20),
+                              bottomRight: Radius.circular(20)),
+                        ),
+                        child: Container(
+                          margin: EdgeInsets.only(left: 20),
+                          child: const Text(
+                            textAlign: TextAlign.left,
+                            'Sports accessories',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                // SizedBox(height: 30,)
+              ],
+            )
+          ],
         ),
       ),
     );
